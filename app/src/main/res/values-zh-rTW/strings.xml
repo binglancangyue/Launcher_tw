@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">桌面</string>
+    <string name="app_not_install">該應用尚未安裝!</string>
+    <string name="tv_camera">前鏡頭</string>
+    <string name="tv_file_manager">文件管理器</string>
+    <string name="tv_wifi">WIFI熱點</string>
+    <string name="tv_bt">藍牙</string>
+    <string name="tv_playback">影像庫</string>
+    <string name="tv_app_list">應用列表</string>
+    <string name="tv_settings">設定</string>
+</resources>
