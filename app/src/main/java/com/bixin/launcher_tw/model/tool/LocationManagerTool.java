@@ -10,7 +10,6 @@ import android.util.Log;
 
 import com.bixin.launcher_tw.model.LauncherApp;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * @author Altair
