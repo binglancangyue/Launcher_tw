@@ -1,12 +1,19 @@
 package com.bixin.launcher_tw.model.tool;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.usage.UsageEvents;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.LauncherApp;
@@ -17,6 +24,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.ACTIVITY_SERVICE;
 
 /**
  * @author Altair
@@ -84,7 +92,7 @@ public class StartActivityTool {
         OutputStream out = null;
         try {
             ActivityManager am =
-                    (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+                    (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
             if (am != null) {
                 am.killBackgroundProcesses(packageName);
                 Process process = Runtime.getRuntime().exec("su");
@@ -117,7 +125,7 @@ public class StartActivityTool {
     public void stopApps(String packageName) {
         try {
             ActivityManager am =
-                    (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+                    (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
             Method forceStopPackage = null;
             if (am != null) {
                 forceStopPackage = am.getClass().getDeclaredMethod("forceStopPackage",
@@ -133,7 +141,7 @@ public class StartActivityTool {
     }
 
     public void killApp(String packageName) {
-        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
         assert am != null;
         List<ActivityManager.RunningAppProcessInfo> processes = am.getRunningAppProcesses();
         for (ActivityManager.RunningAppProcessInfo info : processes) {
@@ -158,6 +166,39 @@ public class StartActivityTool {
                         ".Settings$TetherSettingsActivity");
         intent.setComponent(comp);
         LauncherApp.getInstance().startActivity(intent);
+    }
+
+    /**
+     * 判断应用是否在运行
+     *
+     * @param context
+     * @return
+     */
+    public boolean isRun() {
+        ActivityManager am = (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
+        boolean isAppRunning = false;
+        String MY_PKG_NAME = "com.zsi.powervideo";
+        for (ActivityManager.RunningAppProcessInfo info : list) {
+            Log.i("ActivityService isRun()", info.processName);
+            if (info.processName.equals(MY_PKG_NAME)) {
+                isAppRunning = true;
+
+                break;
+            }
+        }
+        return isAppRunning;
+    }
+
+    public boolean isServiceRunning() {
+        ActivityManager manager = (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            Log.d(TAG, "isServiceRunning: "+service.service.getClassName());
+            if ("com.zsi.powervideo".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

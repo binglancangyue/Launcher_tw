@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -66,6 +67,7 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
     public LocationManagerTool mLocationManager;
     private RequestPermissionTool requestPermissionTool;
 
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +96,6 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
             case R.id.rl_camera:
 //                    sendTest("adb shell input keyevent  26");
 //                sendKeyCode(KeyEvent.KEYCODE_POWER);
-
                 if (Customer.IS_KD003) {
                     mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_ViDEO_PLAY_BACK);
                 } else {
@@ -171,6 +172,9 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
             if (msg.what == 1) {
                 mActivity.updateGpsSpeed((String) msg.obj);
             }
+            if (msg.what == 2) {
+                mActivity.startUploadService();
+            }
         }
     }
 
@@ -201,7 +205,6 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
         if (Customer.IS_KD003) {
             tvSpeedLimit = findViewById(R.id.tv_speed_limit);
         }
-
     }
 
     @Override
@@ -229,18 +232,9 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
 //            checkPermission();
             requestPermissionTool.initPermission(permissions, this);
             registerAppReceiver();
-            startUploadService();
+            myHandle.sendEmptyMessageDelayed(2, 3000);
         }));
     }
-
-    private void startDVRService() {
-        Intent intent = new Intent();
-        String packageName = "com.bx.carDVR";
-        String className = "com.bx.carDVR.DVRService";
-        intent.setComponent(new ComponentName(packageName, className));
-        mContext.startService(intent);
-    }
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void checkPermission() {
@@ -286,6 +280,16 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    @SuppressLint("NewApi")
+    private void startDVRService() {
+        Intent intent = new Intent();
+        String packageName = "com.bx.carDVR";
+        String className = "com.bx.carDVR.DVRService";
+        intent.setComponent(new ComponentName(packageName, className));
+        intent.setPackage(packageName);
+        mContext.startService(intent);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void startVoiceRecognitionService() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -295,13 +299,14 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
         mContext.startForegroundService(intent);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("NewApi")
     private void startUploadService() {
+        Log.d(TAG, "startUploadService: ");
         Intent intent = new Intent();
         String packageName = "com.zsi.powervideo";
         String className = "com.zsi.powervideo.service.AwakenService";
         intent.setComponent(new ComponentName(packageName, className));
-        mContext.startService(intent);
+        mContext.startForegroundService(intent);
 //        mStartActivityTool.launchAppByPackageName("com.zsi.powervideo");
     }
 
