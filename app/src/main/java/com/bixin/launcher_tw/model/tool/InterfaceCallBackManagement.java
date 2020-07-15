@@ -28,11 +28,11 @@ public class InterfaceCallBackManagement {
         this.mOnLocationListener = listener;
     }
 
-    public void gpsSpeedChange() {
+    public void gpsSpeedChange(int speed) {
         if (mOnLocationListener == null) {
             return;
         }
-        mOnLocationListener.gpsSpeedChanged();
+        mOnLocationListener.gpsSpeedChanged(speed);
     }
 
     public void updateAppList() {

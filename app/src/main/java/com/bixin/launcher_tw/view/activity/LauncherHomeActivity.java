@@ -15,7 +15,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -170,7 +170,7 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1) {
-                mActivity.updateGpsSpeed((String) msg.obj);
+                mActivity.updateGpsSpeed(String.valueOf(msg.arg1));
             }
             if (msg.what == 2) {
                 mActivity.startUploadService();
@@ -208,8 +208,11 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void gpsSpeedChanged() {
-        myHandle.sendEmptyMessage(1);
+    public void gpsSpeedChanged(int speed) {
+        Message message = Message.obtain();
+        message.what = 1;
+        message.arg1 = speed;
+        myHandle.sendMessage(message);
     }
 
 
@@ -335,6 +338,5 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
             mLocationManager.stopLocation();
         }
     }
-
 
 }

@@ -9,5 +9,5 @@ public interface OnLocationListener {
     /**
      * location gps message
      */
-    void gpsSpeedChanged();
+    void gpsSpeedChanged(int speed);
 }
