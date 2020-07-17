@@ -62,13 +62,13 @@ public class BrightnessDialogActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brightness_dialog);
 
-        Window window = getWindow();
-        WindowManager m = getWindowManager();
-        Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.width = (int) (d.getWidth() * 0.9);
-        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        window.setAttributes(lp);
+//        Window window = getWindow();
+//        WindowManager m = getWindowManager();
+//        Display d = m.getDefaultDisplay();  //为获取屏幕宽、高
+//        WindowManager.LayoutParams lp = window.getAttributes();
+//        lp.width = (int) (d.getWidth() * 0.9);
+//        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//        window.setAttributes(lp);
 
         this.mContext = this;
         mInnerHandler = new InnerHandler(this);
@@ -106,7 +106,6 @@ public class BrightnessDialogActivity extends Activity {
         message.arg1 = arg1;
         return message;
     }
-
 
     /**
      * 获得屏幕亮度值

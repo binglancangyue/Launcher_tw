@@ -174,10 +174,10 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
             }
             if (msg.what == 2) {
                 mActivity.startUploadService();
+                mActivity.startTwDVR();
             }
         }
     }
-
 
     private void updateGpsSpeed(String s) {
         tvSpeed.setText(s);
@@ -311,6 +311,10 @@ public class LauncherHomeActivity extends AppCompatActivity implements View.OnCl
         intent.setComponent(new ComponentName(packageName, className));
         mContext.startForegroundService(intent);
 //        mStartActivityTool.launchAppByPackageName("com.zsi.powervideo");
+    }
+
+    private void startTwDVR() {
+        mStartActivityTool.launchAppByPackageName("com.msig.mingtai.dvr002apptest");
     }
 
     private void showSettingWindow() {
