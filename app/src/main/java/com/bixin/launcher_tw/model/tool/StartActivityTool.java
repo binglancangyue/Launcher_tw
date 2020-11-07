@@ -7,9 +7,16 @@ import android.app.usage.UsageEvents;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,7 +28,9 @@ import com.bixin.launcher_tw.model.LauncherApp;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.ACTIVITY_SERVICE;
@@ -33,6 +42,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
  */
 public class StartActivityTool {
     private Context mContext;
+    private ContentResolver mResolver;
 
     public StartActivityTool(Context mContext) {
         this.mContext = mContext;
@@ -40,7 +50,7 @@ public class StartActivityTool {
 
     public StartActivityTool() {
         this.mContext = LauncherApp.getInstance();
-
+        this.mResolver = mContext.getContentResolver();
     }
 
     /**
@@ -71,7 +81,8 @@ public class StartActivityTool {
 
         Intent launchIntent = mContext.getPackageManager().getLaunchIntentForPackage(packageName);
         if (launchIntent == null) {
-            ToastTool.showToast(R.string.app_not_install);
+            String s = LauncherApp.getInstance().getString(R.string.app_not_install);
+            ToastTool.showToast(s + "\n" + packageName);
         } else {
             mContext.startActivity(launchIntent);
         }
@@ -193,12 +204,88 @@ public class StartActivityTool {
     public boolean isServiceRunning() {
         ActivityManager manager = (ActivityManager) mContext.getSystemService(ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            Log.d(TAG, "isServiceRunning: "+service.service.getClassName());
+            Log.d(TAG, "isServiceRunning: " + service.service.getClassName());
             if ("com.zsi.powervideo".equals(service.service.getClassName())) {
                 return true;
             }
         }
         return false;
+    }
+
+    @SuppressLint("NewApi")
+    public static Map getIMEIforO(Context context) {
+        Map<String, String> map = new HashMap<String, String>();
+        TelephonyManager tm = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE));
+        String imei1 = tm.getImei(0);
+        String imei2 = tm.getImei(1);
+        if (TextUtils.isEmpty(imei1) && TextUtils.isEmpty(imei2)) {
+
+            map.put("imei1", tm.getMeid()); //如果CDMA制式手机返回MEID
+        } else {
+            map.put("imei1", imei1);
+
+            map.put("imei2", imei2);
+        }
+        return map;
+    }
+
+    public void getAllContacts() {
+        if (mResolver == null) {
+            mResolver = mContext.getContentResolver();
+        }
+        Uri uri = ContactsContract.Data.CONTENT_URI;
+        Cursor cursorUser = mResolver.query(uri, new String[]{ContactsContract.CommonDataKinds.Phone._ID,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
+        boolean isSave = false;
+        if (cursorUser != null) {
+            while (cursorUser.moveToNext()) {
+                int id = cursorUser.getInt(0); // 按上面数组的声明顺序获取
+                String name = cursorUser.getString(1);
+                String rawContactsId = cursorUser.getString(2);
+                if (name.equals("明台產物保險公司")) {
+                    if (rawContactsId.equals("0907913491")) {
+                        isSave = true;
+                    }
+                }
+            }
+            cursorUser.close();
+        }
+        if (!isSave) {
+            addContact("明台產物保險公司", "0907913491");
+            Log.d(TAG, "getAllContacts: 添加 明台產物保險公司");
+        } else {
+            Log.d(TAG, "getAllContacts:已经保存 明台產物保險公司");
+        }
+    }
+
+    private void addContact(String name, String phoneNumber) {
+        // 创建一个空的ContentValues
+        ContentValues values = new ContentValues();
+        // 向RawContacts.CONTENT_URI空值插入，
+        // 先获取Android系统返回的rawContactId
+        // 后面要基于此id插入值
+        Uri rawContactUri = mResolver.insert(ContactsContract.RawContacts.CONTENT_URI, values);
+        long rawContactId = ContentUris.parseId(rawContactUri);
+        values.clear();
+
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+        // 内容类型
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE);
+        // 联系人名字
+        values.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, name);
+        // 向联系人URI添加联系人名字
+        mResolver.insert(ContactsContract.Data.CONTENT_URI, values);
+        values.clear();
+
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+        values.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
+        // 联系人的电话号码
+        values.put(ContactsContract.CommonDataKinds.Phone.NUMBER, phoneNumber);
+        // 电话类型
+        values.put(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE);
+        // 向联系人电话号码URI添加电话号码
+        mResolver.insert(ContactsContract.Data.CONTENT_URI, values);
+        values.clear();
     }
 
 }

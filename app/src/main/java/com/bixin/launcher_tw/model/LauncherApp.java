@@ -4,13 +4,13 @@ import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.provider.Settings;
 import android.util.Log;
 
 import com.bixin.launcher_tw.model.bean.AppInfo;
+import com.bixin.launcher_tw.model.bean.Customer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,8 +22,10 @@ import java.util.List;
  * @description:
  */
 public class LauncherApp extends Application {
+    private boolean isFirstLaunch = true;
     private static LauncherApp mLauncher;
     public ArrayList<AppInfo> mAppList = new ArrayList<>();
+
 
     @Override
     public void onCreate() {
@@ -73,6 +75,29 @@ public class LauncherApp extends Application {
         }
     }
 
+    /**
+     * 获得所有安装的APP
+     */
+    public boolean isInstall() {
+        if (mAppList.size() > 0) {
+            mAppList.clear();
+        }
+        PackageManager pm = getPackageManager();
+        Intent main = new Intent(Intent.ACTION_MAIN, null);
+        main.addCategory(Intent.CATEGORY_LAUNCHER);
+        final List<ResolveInfo> apps = pm.queryIntentActivities(main, 0);
+        Collections.sort(apps, new ResolveInfo.DisplayNameComparator(pm));
+        for (ResolveInfo resolveInfo : apps) {
+            ActivityInfo activityInfo = resolveInfo.activityInfo;
+            if (activityInfo.packageName.equals(Customer.PACKAGE_NAME_DVR)){
+                return true;
+            }
+            Log.d("MyApplication",
+                    "AppList apps info: " + activityInfo.packageName);
+        }
+        return false;
+    }
+
     public ArrayList<AppInfo> getShowAppList() {
         if (mAppList.size() <= 0) {
             initAppList();
@@ -91,5 +116,13 @@ public class LauncherApp extends Application {
             return false;
         }
         return true;
+    }
+
+    public void setFirstLaunch(boolean isFirst) {
+        this.isFirstLaunch = isFirst;
+    }
+
+    public boolean isFirstLaunch() {
+        return this.isFirstLaunch;
     }
 }

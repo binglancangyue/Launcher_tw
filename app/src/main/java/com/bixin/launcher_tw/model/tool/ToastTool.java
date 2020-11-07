@@ -21,7 +21,6 @@ public class ToastTool {
 
     @SuppressLint("ShowToast")
     public static void showToast(int text) {
-
         if (toast == null) {
             toast = Toast.makeText(LauncherApp.getInstance(), text, Toast.LENGTH_SHORT);
         } else {

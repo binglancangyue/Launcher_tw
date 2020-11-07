@@ -1,22 +1,30 @@
 package com.bixin.launcher_tw.model.tool;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
+import android.location.GpsSatellite;
+import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.bixin.launcher_tw.model.LauncherApp;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import static android.content.Context.LOCATION_SERVICE;
 
 
 /**
@@ -29,22 +37,70 @@ public class LocationManagerTool {
     private Location mLocation;
     private static final String TAG = "LocationManagerTool";
 
+    private AMapLocationClient mLocationClient = null;
+    private AMapLocationClientOption mLocationOption = null;
 
     @SuppressLint("MissingPermission")
     public Location getLocation() {
         mLocationManager =
-                (LocationManager) LauncherApp.getInstance().getSystemService(Context.LOCATION_SERVICE);
+                (LocationManager) LauncherApp.getInstance().getSystemService(LOCATION_SERVICE);
         if (mLocationManager == null) {
             return null;
         }
         mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if (mLocation == null) {
-            mLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            mLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
-        mLocationManager.requestLocationUpdates(getProviderName(), 2000, 0,
-                mLocationListener);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000,
+                0, mLocationListener);
+        mLocationManager.addGpsStatusListener(statusListener);
         Log.d(TAG, "getLocation: " + mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER));
         return mLocation;
+    }
+
+
+    public void startGaoDe() {
+        if (mLocationManager == null) {
+            //初始化定位
+            mLocationClient = new AMapLocationClient(LauncherApp.getInstance());
+            //初始化AMapLocationClientOption对象
+            mLocationOption = new AMapLocationClientOption();
+            //设置定位回调监听
+            mLocationClient.setLocationListener(aMapLocationListener);
+            mLocationOption.setInterval(2000);
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+            mLocationClient.setLocationOption(mLocationOption);
+            mLocationClient.stopLocation();
+            mLocationClient.startLocation();
+            Log.d(TAG, "gaoDe: ");
+        } else {
+            mLocationClient.startLocation();
+        }
+    }
+
+    private AMapLocationListener aMapLocationListener = new AMapLocationListener() {
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            int speed = (int) (aMapLocation.getSpeed() * 3.6);
+            Log.d(TAG, "onLocationChanged getCity: " + aMapLocation.getCity() + " speed " + speed);
+            sendToActivity(speed);
+        }
+    };
+
+    public Location getLastKnownLocation() {
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            @SuppressLint("MissingPermission") Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
     private LocationListener mLocationListener = new LocationListener() {
@@ -63,7 +119,7 @@ public class LocationManagerTool {
                     + "速度:" + location.getSpeed() + "\r\n"
                     + "时间:" + getTimeByGPS(location.getTime()) + "\r\n";
             Log.d("LocationManagerTool", strResult);
-            sendToActivity((int) location.getSpeed());
+            sendToActivity((int) (location.getSpeed() * 3.6));
 //            getDetailedAddress(location);
         }
 
@@ -80,6 +136,31 @@ public class LocationManagerTool {
         @Override
         public void onProviderDisabled(String provider) {
             Log.d(TAG, "onProviderDisabled: " + provider);
+        }
+    };
+
+
+    private GpsStatus.Listener statusListener = new GpsStatus.Listener() {
+        public void onGpsStatusChanged(int event) {
+            GpsStatus gpsStatus = mLocationManager.getGpsStatus(null);
+            if (event == GpsStatus.GPS_EVENT_SATELLITE_STATUS) {//周期的报告卫星状态
+                //得到所有收到的卫星的信息，包括 卫星的高度角、方位角、信噪比、和伪随机号（及卫星编号）
+                Iterable<GpsSatellite> allSatellites;
+                allSatellites = gpsStatus.getSatellites();
+                Iterator<GpsSatellite> iterator = allSatellites.iterator();
+                int numOfSatellites = 0;
+                int maxSatellites = gpsStatus.getMaxSatellites();
+                while (iterator.hasNext() && numOfSatellites < maxSatellites) {
+                    GpsSatellite s = iterator.next();
+                    if (s.getSnr() != 0) {
+                        numOfSatellites++;
+                    }
+                }
+                Log.v(TAG, "GPS satellite : " + numOfSatellites);
+                if (numOfSatellites <= 3) {
+                    sendToActivity(0);
+                }
+            }
         }
     };
 
@@ -159,4 +240,11 @@ public class LocationManagerTool {
         }
     }
 
+    public void stopGaoDeLocation() {
+        if (mLocationClient != null) {
+            mLocationClient.setLocationListener(null);
+            mLocationClient.stopLocation();
+            mLocationClient.onDestroy();
+        }
+    }
 }

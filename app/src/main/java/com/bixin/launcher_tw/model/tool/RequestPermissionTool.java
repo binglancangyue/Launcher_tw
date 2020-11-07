@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -37,8 +38,11 @@ public class RequestPermissionTool {
         //申请权限
         if (mPermissionList.size() > 0) {//有权限没有通过，需要申请
             ActivityCompat.requestPermissions(activity, permissions, LauncherHomeActivity.REQUEST_CAMERA_CODE);
+            Log.d("RequestPermissionTool", "没权限: ");
         } else {
-            activity.mLocationManager.getLocation();
+            Log.d("RequestPermissionTool", "initPermission:go to");
+//            activity.mLocationManager.getLocation();
+            activity.mLocationManager.startGaoDe();
         }
     }
 

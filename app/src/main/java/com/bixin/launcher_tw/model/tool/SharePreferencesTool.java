@@ -13,16 +13,29 @@ import static com.bixin.launcher_tw.model.bean.Customer.SP_NAME;
  * @date :2019.10.28 上午 10:03
  * @description: SharedPreferences 工具
  */
-public class SharedPreferencesTool {
-    private SharedPreferences mPreferences;
+public class SharePreferencesTool {
+    private static SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
     private Context mContext;
 
     @SuppressLint("CommitPrefEdits")
-    public SharedPreferencesTool() {
+    public SharePreferencesTool() {
         this.mContext = LauncherApp.getInstance();
         this.mPreferences = mContext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         this.mEditor = mPreferences.edit();
+    }
+
+    private static class SingletonHolder {
+        private static final SharePreferencesTool INSTANCE = new SharePreferencesTool();
+    }
+
+    public static SharePreferencesTool getInstance() {
+        return SingletonHolder.INSTANCE;
+    }
+
+
+    public SharedPreferences getSharedPreferences() {
+        return mPreferences;
     }
 
     public SharedPreferences getSharePreferences() {
@@ -42,5 +55,9 @@ public class SharedPreferencesTool {
     public void saveBoolean(String name, boolean value) {
         mEditor.putBoolean(name, value);
         mEditor.apply();
+    }
+
+    public boolean getBoolean(String name, boolean isTrue) {
+        return mPreferences.getBoolean(name, isTrue);
     }
 }
