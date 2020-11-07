@@ -86,6 +86,7 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
             view = getLayoutInflater().inflate(R.layout.activity_home_kd003, null);
         } else {
             view = getLayoutInflater().inflate(R.layout.activity_home, null);
+
         }
         setContentView(view);
         Log.d(TAG, "onCreate: ");
