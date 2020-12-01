@@ -300,7 +300,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             requestPermissionTool.initPermission(permissions, this);
             registerAppReceiver();
             myHandle.sendEmptyMessageDelayed(2, 4000);
-            myHandle.sendEmptyMessageDelayed(3, 7000);
+            myHandle.sendEmptyMessageDelayed(3, 10000);
         }));
     }
 
