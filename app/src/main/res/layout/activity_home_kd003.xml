@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1f1f1f"
-    android:divider="@drawable/shape_linearlayout_divider"
+    android:divider="@drawable/shape_linearlayout_divider_home"
     android:orientation="horizontal"
-    android:padding="15dp"
+    android:padding="21dp"
     android:showDividers="middle">
 
     <LinearLayout
@@ -24,7 +24,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:visibility="gone"
             tools:ignore="NestedWeights">
 
             <ImageView
@@ -45,25 +45,24 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1">
+            android:layout_marginBottom="5dp">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/icon_home_speeds_kd003" />
+                android:layout_height="96dp"
+                app:srcCompat="@drawable/img_speed_line" />
 
             <TextView
                 android:id="@+id/tv_gps_speed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="11dp"
                 android:text="120"
                 android:textColor="@color/colorWhite"
-                android:textSize="55sp"
+                android:textSize="53sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -73,15 +72,14 @@
                 android:layout_marginEnd="40dp"
                 android:text="km/h"
                 android:textColor="@color/colorWhite"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
         </FrameLayout>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="86dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_weight="1"
             app:srcCompat="@drawable/icon_home_adas_kd003" />
 
     </LinearLayout>
@@ -91,7 +89,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/shape_circle_btn_video"
+        android:background="@drawable/selector_video_bg"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -109,7 +107,7 @@
             android:layout_marginTop="40dp"
             android:text="@string/tv_playback"
             android:textColor="@color/colorWhite"
-            android:textSize="28sp" />
+            android:textSize="30sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -117,7 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/shape_circle_btn_settings"
+        android:background="@drawable/selector_settings_bg"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -135,7 +133,7 @@
             android:layout_marginTop="40dp"
             android:text="@string/tv_settings"
             android:textColor="@color/colorWhite"
-            android:textSize="28sp" />
+            android:textSize="30sp" />
     </RelativeLayout>
 
 </LinearLayout>

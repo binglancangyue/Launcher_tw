@@ -20,13 +20,17 @@ public class Customer {
     public static final String PACKAGE_NAME_DVR = "com.bx.carDVR";//DVR
     public static final String ACTION_OPEN_DVR_CAMERA = "com.android.systemui.OPEN_CAMERA";
     public final static String PACKAGE_NAME_DVR2_TW = "com.msig.mingtai.dvr002app";
+    public final static String PACKAGE_NAME_DVR3_TW = "com.transiot.kardidvr003";
+    public final static String ACTION_HIDE_NAVIGATION = "com.bixin.launcher.action.hide_navigation";
+    public final static String ACTION_SETTINGS_FUNCTION="com.bixin.launcher.action.settings_function";
+    public static final String ACTION_SET_DVR_RECORD_TIME = "com.android.systemui.SET_DVR_RECORD_TIME";
+    public final static String SP_NAME = "launcher_settings";
 
-    public final static String SP_NAME = "settings";
-
+    public static final String SYSTEM_UI_KEY="key_type";
     public static final String ACTION_TXZ_CUSTOM_COMMAND = "com.bixin.txz.command";
 
     public static final boolean IS_DOUBLE_ROWS = false;
-    public static final boolean IS_KD003 = false;
+    public static final boolean IS_KD003 = true;
 
     public static final String ACTION_SHOW_SETTING_WINDOW = "com.android.systemui.show_setting_window";
 

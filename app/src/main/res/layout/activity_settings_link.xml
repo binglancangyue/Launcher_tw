@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/SettingsItemStyle"
+    android:background="@color/kd003Black"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_qr"
+        android:layout_width="280dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/selector_settings_btn"
+        android:gravity="center"
+        android:text="@string/settings_link_qr_code"
+        android:textColor="@color/colorWhite"
+        android:textSize="26sp" />
+
+    <View
+        android:id="@+id/view_line_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_linearlayout_divider_v" />
+
+    <TextView
+        style="@style/SettingsTitleStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="20dp"
+        android:text="@string/setings_link_title" />
+
+    <LinearLayout
+        style="@style/SettingsRowLayoutStyle"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SettingsTitleStyle"
+                android:text="@string/setings_gps" />
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/tv_gps_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                 />
+
+            <Switch
+                android:padding="10dp"
+                android:id="@+id/switch_gps"
+                style="@style/SwitchStyle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="93dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SettingsTitleStyle"
+                android:text="@string/setings_4g" />
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/tv_4g_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                 />
+
+            <Switch
+                android:padding="10dp"
+                android:id="@+id/switch_4g"
+                style="@style/SwitchStyle" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

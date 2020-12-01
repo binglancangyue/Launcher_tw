@@ -17,4 +17,9 @@
     <dimen name="popupWindowSeekBarMargin">15dp</dimen>
     <dimen name="seekBarPadding">20dp</dimen>
     <dimen name="shape_radius">20dp</dimen>
+    <dimen name="shape_radius15">15dp</dimen>
+    <dimen name="itemVertical">20dp</dimen>
+    <dimen name="itemHorizontal">16dp</dimen>
+    <dimen name="kd003DialogWidth">500dp</dimen>
+    <dimen name="switchSize">34dp</dimen>
 </resources>

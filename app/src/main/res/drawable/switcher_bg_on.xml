@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <item android:height="15dp" android:width="300dp" android:gravity="center">
+       <bitmap  android:src="@drawable/switch_on_path"/>
+    </item>
+</layer-list>

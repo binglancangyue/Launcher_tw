@@ -5,7 +5,12 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
-
+    <color name="kd003Black">#1f1f1f</color>
+    <color name="kd003BtnColor">#fe9557</color>
+    <color name="kd003BtnPressColor">#bf7041</color>
+    <color name="colorRed">#e6654e</color>
+    <color name="colorToastBG">#333333</color>
+    <color name="colorChecked">#e6654e</color>
     <!--透白-->
     <color name="colorTransparent_w_95">#0DFFFFFF</color>
     <color name="colorTransparent_w_90">#1AFFFFFF</color>

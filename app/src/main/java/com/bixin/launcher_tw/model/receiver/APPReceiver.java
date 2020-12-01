@@ -67,18 +67,18 @@ public class APPReceiver extends BroadcastReceiver {
                         "onReceive:getState " + info.getState() + " isConnected " + info.isConnected());
                 if (NetworkInfo.State.CONNECTED == info.getState() && info.isConnected()) {
                     if (LauncherApp.getInstance().isFirstLaunch()) {
-                        if (TextUtils.isEmpty(Customer.PACKAGE_NAME_DVR2_TW)) {
+                        if (TextUtils.isEmpty(Customer.PACKAGE_NAME_DVR3_TW)) {
                             Log.i("StartActivityTool", "package name is null!");
                             return;
                         }
-                        Intent launchIntent = LauncherApp.getInstance().getPackageManager().getLaunchIntentForPackage(Customer.PACKAGE_NAME_DVR2_TW);
+                        Intent launchIntent = LauncherApp.getInstance().getPackageManager().getLaunchIntentForPackage(Customer.PACKAGE_NAME_DVR3_TW);
                         if (launchIntent == null) {
                             String s = LauncherApp.getInstance().getString(R.string.app_not_install);
-                            ToastTool.showToast(s + "\n" + Customer.PACKAGE_NAME_DVR2_TW);
+                            ToastTool.showToast(s + "\n" + Customer.PACKAGE_NAME_DVR3_TW);
                         } else {
 //                            SharePreferencesTool.getInstance().saveBoolean("isFirstStart", false);
                             LauncherApp.getInstance().setFirstLaunch(false);
-                            Log.d("APPReceiver", "onReceive: " + Customer.PACKAGE_NAME_DVR2_TW);
+                            Log.d("APPReceiver", "onReceive: " + Customer.PACKAGE_NAME_DVR3_TW);
                             LauncherApp.getInstance().startActivity(launchIntent);
                         }
                     }

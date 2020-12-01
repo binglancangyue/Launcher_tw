@@ -26,4 +26,79 @@
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
     </style>
+
+
+    <style name="SettingsLayoutButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="RadioButtonStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:buttonTint">@color/color_selector_radio_btn</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="SettingsTitleStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="SettingsRowLayoutStyle">
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">20dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="SettingsItemStyle">
+        <item name="background">@color/kd003Black</item>
+        <item name="android:paddingHorizontal">35dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="SwitchStyle">
+        <item name="android:thumb">@drawable/selector_thumb_check</item>
+        <item name="android:track">@drawable/selector_track_check</item>
+        <!--<item name="thumbTint">@color/color_selector_switch_thumb</item>
+        <item name="trackTint">@color/color_selector_switch_track</item>-->
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="SeekBarStyle">
+        <item name="maxHeight">8dp</item>
+        <item name="minHeight">8dp</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorRed</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="MySwitch" parent="Theme.AppCompat.Light">
+        <!-- Active thumb color & Active track color(30% transparency) switch 打开时的拇指按钮的颜色 轨迹颜色默认为30%这个颜色 -->
+        <item name="colorControlActivated">#fe9557</item>
+        <!-- Inactive thumb color switch关闭时的拇指按钮的颜色 -->
+        <item name="colorSwitchThumbNormal">#bdbdbd</item>
+        <!-- Inactive track color(30% transparency) switch关闭时的轨迹的颜色 30%这个颜色 -->
+        <item name="android:colorForeground">#4dffffff</item>
+        <!--<item name="android:colorBackground">#fa6d18</item>-->
+        <!--使用方法： 在布局文件中给需要自定义控件中增加app:theme="@style/MySwitch"-->
+    </style>
+
+    <style name="MyStyle" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
 </resources>

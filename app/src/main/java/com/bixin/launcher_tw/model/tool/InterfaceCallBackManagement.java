@@ -11,6 +11,7 @@ import com.bixin.launcher_tw.model.listener.OnLocationListener;
 public class InterfaceCallBackManagement {
     private OnLocationListener mOnLocationListener;
     private OnAppUpdateListener mOnAppUpdateListener;
+    private OnLocationListener.OnUpdateViewListener onUpdateViewListener;
 
     public static InterfaceCallBackManagement getInstance() {
         return SingleHolder.management;
@@ -38,6 +39,16 @@ public class InterfaceCallBackManagement {
     public void updateAppList() {
         if (mOnAppUpdateListener != null) {
             mOnAppUpdateListener.updateAppList();
+        }
+    }
+
+    public void setOnUpdateViewListener(OnLocationListener.OnUpdateViewListener listener) {
+        this.onUpdateViewListener = listener;
+    }
+
+    public void updateView(int type, boolean isCheck) {
+        if (onUpdateViewListener != null) {
+            onUpdateViewListener.updateView(type, isCheck);
         }
     }
 

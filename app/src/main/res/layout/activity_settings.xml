@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/kd003Black"
+    android:orientation="vertical"
+    android:paddingVertical="23dp"
+    android:paddingHorizontal="21dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/shape_linearlayout_divider"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <LinearLayout
+            android:id="@+id/ll_link"
+            style="@style/SettingsLayoutButtonStyle"
+            android:layout_weight="1"
+            android:background="@drawable/selector_settings_home_btn_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                app:srcCompat="@drawable/icon_settings_link" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_link"
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_screen"
+            style="@style/SettingsLayoutButtonStyle"
+            android:layout_weight="1"
+            android:background="@drawable/selector_settings_home_btn_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/icon_settings_screen" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_screen"
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_adas"
+            style="@style/SettingsLayoutButtonStyle"
+            android:layout_weight="1"
+            android:background="@drawable/selector_settings_home_btn_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/icon_settings_adas" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_adas"
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_other"
+            style="@style/SettingsLayoutButtonStyle"
+            android:layout_weight="1"
+            android:background="@drawable/selector_settings_home_btn_bg">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                app:srcCompat="@drawable/icon_settings_setup" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/settings_other"
+                android:textColor="@color/colorWhite"
+                android:textSize="28sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/SettingsItemStyle"
+        android:background="@color/kd003Black"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv_screen_auto_title"
+            style="@style/SettingsTitleStyle"
+            android:layout_marginStart="@dimen/itemHorizontal"
+            android:layout_marginTop="@dimen/itemVertical"
+            android:text="@string/screen_auto"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_mode_close"
+            style="@style/RadioButtonStyle"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/itemHorizontal"
+            android:layout_marginTop="12dp"
+            android:text="@string/screen_mode_close"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/rb_screen_mode_saver"
+            app:layout_constraintTop_toBottomOf="@id/tv_screen_auto_title" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_mode_saver"
+            style="@style/RadioButtonStyle"
+            android:text="@string/screen_mode_saver"
+            app:layout_constraintBottom_toBottomOf="@id/rb_screen_mode_close"
+            app:layout_constraintLeft_toRightOf="@id/rb_screen_mode_close"
+            app:layout_constraintRight_toLeftOf="@id/rb_screen_mode_light"
+            app:layout_constraintTop_toTopOf="@id/rb_screen_mode_close" />
+
+        <RadioButton
+            android:id="@+id/rb_screen_mode_light"
+            style="@style/RadioButtonStyle"
+            android:layout_marginEnd="@dimen/itemHorizontal"
+            android:text="@string/screen_mode_light"
+            app:layout_constraintBottom_toBottomOf="@id/rb_screen_mode_close"
+            app:layout_constraintLeft_toRightOf="@id/rb_screen_mode_saver"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rb_screen_mode_close" />
+
+        <View
+            android:id="@+id/view_line_1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/shape_linearlayout_divider_v"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rb_screen_mode_close" />
+
+        <TextView
+            android:id="@+id/tv_standby_time_tile"
+            style="@style/SettingsTitleStyle"
+            android:layout_marginStart="@dimen/itemHorizontal"
+            android:layout_marginTop="@dimen/itemVertical"
+            android:text="@string/standby_time_tile"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_line_1" />
+
+        <RadioButton
+            android:id="@+id/rb_standby_time_1"
+            style="@style/RadioButtonStyle"
+            android:layout_marginStart="@dimen/itemHorizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="@dimen/itemVertical"
+            android:text="@string/standby_time_1"
+            app:layout_constraintEnd_toStartOf="@id/rb_standby_time_3"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_standby_time_tile" />
+
+        <RadioButton
+            android:id="@+id/rb_standby_time_3"
+            style="@style/RadioButtonStyle"
+            android:layout_gravity="center"
+            android:text="@string/standby_time_3"
+            app:layout_constraintBottom_toBottomOf="@id/rb_standby_time_1"
+            app:layout_constraintEnd_toStartOf="@id/rb_standby_time_5"
+            app:layout_constraintStart_toEndOf="@id/rb_standby_time_1"
+            app:layout_constraintTop_toTopOf="@id/rb_standby_time_1" />
+
+        <RadioButton
+            android:id="@+id/rb_standby_time_5"
+            style="@style/RadioButtonStyle"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/itemHorizontal"
+            android:text="@string/standby_time_5"
+            app:layout_constraintBottom_toBottomOf="@id/rb_standby_time_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rb_standby_time_3"
+            app:layout_constraintTop_toTopOf="@id/rb_standby_time_1" />
+
+        <View
+            android:id="@+id/view_line_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/itemVertical"
+            android:background="@drawable/shape_linearlayout_divider_v"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rb_standby_time_1" />
+
+        <TextView
+            android:id="@+id/tv_screen_brightness_title"
+            style="@style/SettingsTitleStyle"
+            android:layout_marginStart="@dimen/itemHorizontal"
+            android:layout_marginTop="@dimen/itemVertical"
+            android:text="@string/screen_brightness_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_line_2" />
+
+
+        <SeekBar
+            android:id="@+id/skb_screen_brightness"
+            style="@style/SeekBarStyle"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/itemHorizontal"
+            android:layout_marginTop="@dimen/itemHorizontal"
+            android:maxHeight="8dp"
+            android:minHeight="8dp"
+            android:thumbOffset="10dp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_screen_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_screen_brightness_title" />
+
+        <TextView
+            android:id="@+id/tv_screen_value"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="29dp"
+            android:layout_marginEnd="@dimen/itemHorizontal"
+            android:text="100"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/skb_screen_brightness"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0"
+            app:layout_constraintStart_toEndOf="@id/skb_screen_brightness"
+            app:layout_constraintTop_toTopOf="@id/skb_screen_brightness" />
+
+        <View
+            android:id="@+id/view_line_3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/itemVertical"
+            android:background="@drawable/shape_linearlayout_divider_v"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/skb_screen_brightness" />
+
+        <TextView
+            android:id="@+id/tv_volume_adjustment_title"
+            style="@style/SettingsTitleStyle"
+            android:layout_marginStart="@dimen/itemHorizontal"
+            android:layout_marginTop="@dimen/itemVertical"
+            android:text="@string/volume_adjustment_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_line_3" />
+
+        <SeekBar
+            android:id="@+id/skb_volume_adjustment"
+            style="@style/SeekBarStyle"
+            android:layout_width="0dp"
+            android:layout_marginHorizontal="@dimen/itemHorizontal"
+            android:layout_marginTop="@dimen/itemHorizontal"
+            android:max="15"
+            android:maxHeight="8dp"
+            android:minHeight="8dp"
+            android:thumbOffset="10dp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_volume_value"
+            app:layout_constraintTop_toBottomOf="@id/tv_volume_adjustment_title" />
+
+        <TextView
+            android:id="@+id/tv_volume_value"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="29dp"
+            android:layout_marginEnd="@dimen/itemHorizontal"
+            android:gravity="center_horizontal"
+            android:text="15"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/skb_volume_adjustment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0"
+            app:layout_constraintStart_toEndOf="@id/skb_volume_adjustment"
+            app:layout_constraintTop_toTopOf="@id/skb_volume_adjustment" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

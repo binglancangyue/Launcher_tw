@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape android:shape="oval">
+            <size android:width="@dimen/switchSize" android:height="@dimen/switchSize" />
+            <solid android:color="#fe9557" />
+            <stroke android:width="2dp" android:color="#fe9557" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <size android:width="@dimen/switchSize" android:height="@dimen/switchSize" />
+            <solid android:color="#bdbdbd" />
+            <stroke android:width="2dp" android:color="#bdbdbd" />
+        </shape>
+    </item>
+    <!--   <item android:drawable="@drawable/switch_on_button" android:state_checked="true" />
+       <item android:drawable="@drawable/switch_off_button" android:state_checked="false" />
+       <item android:drawable="@drawable/switch_off_button" />-->
+</selector>

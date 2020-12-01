@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <shape>
+            <solid android:color="#8d502b" />
+            <size android:height="@dimen/switchSize" />
+            <corners android:radius="@dimen/switchSize" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="#4dffffff" />
+            <size android:height="@dimen/switchSize" />
+            <corners android:radius="@dimen/switchSize" />
+        </shape>
+    </item>
+    <!--    <item android:drawable="@drawable/switch_on_path" android:state_checked="true" />
+        <item android:drawable="@drawable/switch_off_path" android:state_checked="false" />
+        <item android:drawable="@drawable/switch_off_path" />-->
+
+    <!--    <item android:drawable="@drawable/switcher_bg_on" android:state_checked="true" />
+        <item android:drawable="@drawable/switcher_bg_off" android:state_checked="false" />
+        <item android:drawable="@drawable/switcher_bg_off" />-->
+</selector>

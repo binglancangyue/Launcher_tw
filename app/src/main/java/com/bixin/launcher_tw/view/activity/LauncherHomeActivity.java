@@ -2,11 +2,13 @@ package com.bixin.launcher_tw.view.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.model.LauncherApp;
 import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.listener.OnLocationListener;
 import com.bixin.launcher_tw.model.receiver.APPReceiver;
@@ -34,8 +37,13 @@ import com.bixin.launcher_tw.model.tool.SharePreferencesTool;
 import com.bixin.launcher_tw.model.tool.StartActivityTool;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.RxActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -49,7 +57,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date :2020.03.31 下午 06:19
  * @description: main Activity
  */
-public class LauncherHomeActivity extends RxActivity implements View.OnClickListener,
+public class LauncherHomeActivity extends RxAppCompatActivity implements View.OnClickListener,
         OnLocationListener {
     private Context mContext;
     private MyHandle myHandle;
@@ -105,6 +113,7 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
         mContext.sendBroadcast(intent);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -117,6 +126,7 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
                 } else {
                     sendBroadcast("dvr_camera_front", true, Customer.ACTION_OPEN_DVR_CAMERA);
                     mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR);
+//                    mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
                 }
                 break;
             case R.id.rl_wifi:
@@ -124,7 +134,9 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
                 if (Customer.IS_DOUBLE_ROWS) {
                     mStartActivityTool.openAPUI();
                 } else if (Customer.IS_KD003) {
-                    showSettingWindow();
+//                    showSettingWindow();
+                    Intent intent = new Intent(this, LauncherSettingsActivity.class);
+                    startActivity(intent);
                 } else {
                     mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_ViDEO_PLAY_BACK);
                 }
@@ -154,13 +166,19 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
             default:
                 break;
         }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        hideOrShowNav(false);
     }
-
+    private void hideOrShowNav(boolean isHide) {
+        Intent intent = new Intent(Customer.ACTION_HIDE_NAVIGATION);
+        intent.putExtra("KEY_HIDE", isHide);
+        sendBroadcast(intent);
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.e(TAG, "onKeyDown: keyCode " + keyCode);
@@ -211,8 +229,8 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
         rlWIFI = findViewById(R.id.rl_wifi);
         rlCamera.setOnClickListener(this);
         rlWIFI.setOnClickListener(this);
-        rlFile = findViewById(R.id.rl_file);
-        rlFile.setOnClickListener(this);
+//        rlFile = findViewById(R.id.rl_file);
+//        rlFile.setOnClickListener(this);
         if (Customer.IS_DOUBLE_ROWS) {
             rlFile = findViewById(R.id.rl_file);
             rlBT = findViewById(R.id.rl_bt);
@@ -354,7 +372,8 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
         String className = "com.zsi.powervideo.service.AwakenService";
         intent.setComponent(new ComponentName(packageName, className));
         mContext.startForegroundService(intent);
-//        mStartActivityTool.launchAppByPackageName("com.zsi.powervideo");
+        mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
+
     }
 
     private void showSettingWindow() {

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/kd003Black"
+    android:paddingBottom="20dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/SettingsItemStyle"
+        android:divider="@drawable/shape_linearlayout_divider_v"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <LinearLayout
+            style="@style/SettingsRowLayoutStyle"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SettingsTitleStyle"
+                android:text="@string/other_adas" />
+
+            <TextView
+                android:id="@+id/tv_adas_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textSize="20sp" />
+
+            <Switch
+                android:id="@+id/switch_adas"
+                style="@style/SwitchStyle"
+                android:padding="10dp" />
+            <!--            <Switch
+                            android:textSize="22sp"
+                            android:textColor="@color/colorRed"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:switchMinWidth="60dp"
+                            android:trackTintMode="multiply"
+                            android:thumbTintMode="multiply"
+                            android:id="@+id/switch_adas"
+                            android:trackTint="@color/color_selector_switch_track"
+                            android:thumbTint="@color/color_selector_switch_thumb"
+                            android:gravity="center"
+                            android:padding="10dp" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsRowLayoutStyle"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/SettingsTitleStyle"
+                android:text="@string/other_recording_time" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_recording_1"
+                    style="@style/RadioButtonStyle"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/standby_time_1" />
+
+                <RadioButton
+                    android:id="@+id/rb_recording_3"
+                    style="@style/RadioButtonStyle"
+                    android:layout_centerInParent="true"
+                    android:text="@string/standby_time_3" />
+
+                <RadioButton
+                    android:id="@+id/rb_recording_5"
+                    style="@style/RadioButtonStyle"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/standby_time_5" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/SettingsRowLayoutStyle"
+            android:gravity="center_vertical">
+
+            <TextView
+                style="@style/SettingsTitleStyle"
+                android:text="@string/device_control" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_format_sd"
+                    style="@style/SettingsTitleStyle"
+                    android:layout_width="190dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/selector_settings_btn"
+                    android:gravity="center"
+                    android:text="@string/settings_other_format_sd_card" />
+
+                <TextView
+                    android:id="@+id/tv_system_settings"
+                    style="@style/SettingsTitleStyle"
+                    android:layout_width="190dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="90dp"
+                    android:background="@drawable/selector_settings_btn"
+                    android:gravity="center"
+                    android:text="@string/tv_other_settings" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

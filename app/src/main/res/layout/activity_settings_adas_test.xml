@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/kd003Black"
+    style="@style/SettingsItemStyle">
+
+    <TextView
+        android:id="@+id/tv_speed_title"
+        style="@style/SettingsTitleStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="@dimen/itemVertical"
+        android:text="@string/adas_speed_warning"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/switch_speed"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/switch_speed"
+        style="@style/SwitchStyle"
+        android:layout_marginStart="@dimen/itemVertical"
+        app:layout_constraintBottom_toBottomOf="@id/tv_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_speed_title"
+        app:layout_constraintTop_toTopOf="@id/tv_speed_title" />
+
+    <View
+        android:id="@+id/view_line_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="20dp"
+        android:background="@drawable/shape_linearlayout_divider_v"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_speed_title" />
+
+    <TextView
+        android:id="@+id/tv_limit_title"
+        style="@style/SettingsTitleStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="@dimen/itemVertical"
+        android:text="@string/adas_speeding_warning"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_line_1" />
+
+    <RadioButton
+        android:id="@+id/rb_limit_close"
+        style="@style/RadioButtonStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="@dimen/itemVertical"
+        android:text="@string/adas_switch_off"
+        app:layout_constraintEnd_toStartOf="@id/rb_limit_0"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_limit_title" />
+
+    <RadioButton
+        android:id="@+id/rb_limit_0"
+        style="@style/RadioButtonStyle"
+        android:layout_gravity="center"
+        android:text="@string/adas_switch_original"
+        app:layout_constraintBottom_toBottomOf="@id/rb_limit_close"
+        app:layout_constraintEnd_toStartOf="@id/rb_limit_5"
+        app:layout_constraintStart_toEndOf="@id/rb_limit_close"
+        app:layout_constraintTop_toTopOf="@id/rb_limit_close" />
+
+    <RadioButton
+        android:id="@+id/rb_limit_5"
+        style="@style/RadioButtonStyle"
+        android:layout_gravity="center"
+        android:text="@string/adas_switch_speed_5"
+        app:layout_constraintBottom_toBottomOf="@id/rb_limit_close"
+        app:layout_constraintEnd_toStartOf="@id/rb_limit_10"
+        app:layout_constraintStart_toEndOf="@id/rb_limit_0"
+        app:layout_constraintTop_toTopOf="@id/rb_limit_close" />
+
+    <RadioButton
+        android:id="@+id/rb_limit_10"
+        style="@style/RadioButtonStyle"
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/itemHorizontal"
+        android:text="@string/adas_switch_speed_10"
+        app:layout_constraintBottom_toBottomOf="@id/rb_limit_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/rb_limit_5"
+        app:layout_constraintTop_toTopOf="@id/rb_limit_close" />
+
+    <View
+        android:id="@+id/view_line_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/itemVertical"
+        android:background="@drawable/shape_linearlayout_divider_v"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rb_limit_close" />
+
+    <TextView
+        android:id="@+id/tv_driving_detection_title"
+        style="@style/SettingsTitleStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="@dimen/itemVertical"
+        android:text="@string/adas_driving_detection"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_line_2" />
+
+
+    <Switch
+        android:id="@+id/switch_driving_detection"
+        style="@style/SwitchStyle"
+        android:layout_marginStart="@dimen/itemVertical"
+        app:layout_constraintBottom_toBottomOf="@id/tv_driving_detection_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_driving_detection_title"
+        app:layout_constraintTop_toTopOf="@id/tv_driving_detection_title" />
+
+    <TextView
+        android:id="@+id/tv_warning_interval_title"
+        style="@style/SettingsTitleStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="@dimen/itemVertical"
+        android:text="@string/adas_warning_interval"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_driving_detection_title" />
+
+    <RadioButton
+        android:id="@+id/rb_warning_interval_close"
+        style="@style/RadioButtonStyle"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="12dp"
+        android:text="@string/warning_interval_close"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/rb_warning_interval_5"
+        app:layout_constraintTop_toBottomOf="@id/tv_warning_interval_title" />
+
+    <RadioButton
+        android:id="@+id/rb_warning_interval_5"
+        style="@style/RadioButtonStyle"
+        android:text="@string/warning_interval_5"
+        app:layout_constraintBottom_toBottomOf="@id/rb_warning_interval_close"
+        app:layout_constraintLeft_toRightOf="@id/rb_warning_interval_close"
+        app:layout_constraintRight_toLeftOf="@id/rb_warning_interval_10"
+        app:layout_constraintTop_toTopOf="@id/rb_warning_interval_close" />
+
+    <RadioButton
+        android:id="@+id/rb_warning_interval_10"
+        style="@style/RadioButtonStyle"
+        android:layout_marginEnd="@dimen/itemHorizontal"
+        android:text="@string/warning_interval_10"
+        app:layout_constraintBottom_toBottomOf="@id/rb_warning_interval_close"
+        app:layout_constraintLeft_toRightOf="@id/rb_warning_interval_5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rb_warning_interval_close" />
+
+    <TextView
+        android:id="@+id/tv_warning_mode_title"
+        style="@style/SettingsTitleStyle"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="@dimen/itemVertical"
+        android:text="@string/adas_warning_mode"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rb_warning_interval_close" />
+
+    <RadioButton
+        android:id="@+id/rb_warning_mode_wisdom"
+        style="@style/RadioButtonStyle"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/itemHorizontal"
+        android:layout_marginTop="12dp"
+        android:text="@string/warning_mode_wisdom"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/rb_warning_mode_picture_flickers"
+        app:layout_constraintTop_toBottomOf="@id/tv_warning_mode_title" />
+
+    <RadioButton
+        android:id="@+id/rb_warning_mode_picture_flickers"
+        style="@style/RadioButtonStyle"
+        android:layout_centerInParent="true"
+        android:text="@string/warning_mode_picture_flickers"
+        app:layout_constraintBottom_toBottomOf="@id/rb_warning_mode_wisdom"
+        app:layout_constraintLeft_toRightOf="@id/rb_warning_mode_wisdom"
+        app:layout_constraintRight_toLeftOf="@id/rb_warning_mode_beep"
+        app:layout_constraintTop_toTopOf="@id/rb_warning_mode_wisdom" />
+
+    <RadioButton
+        android:id="@+id/rb_warning_mode_beep"
+        style="@style/RadioButtonStyle"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/itemHorizontal"
+        android:text="@string/warning_mode_beep"
+        app:layout_constraintBottom_toBottomOf="@id/rb_warning_mode_wisdom"
+        app:layout_constraintLeft_toRightOf="@id/rb_warning_mode_picture_flickers"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rb_warning_mode_wisdom" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
