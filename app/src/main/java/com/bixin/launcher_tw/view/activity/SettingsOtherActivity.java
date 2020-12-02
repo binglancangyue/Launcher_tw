@@ -118,19 +118,21 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
                 break;
             case R.id.rb_recording_1:
                 clearRecordingTime();
+                mSharedPreferencesTool.saveRecordTime(1);
                 rbRecordTime1.setChecked(true);
-                sendBroadcastToSystemUI("KEY_RECORD_TIME", 1);
+                sendBroadcastToSystemUI("KEY_RECORD_TIME", 60);
                 break;
             case R.id.rb_recording_3:
                 clearRecordingTime();
-                mSharedPreferencesTool.saveRecordTime(1);
+                mSharedPreferencesTool.saveRecordTime(3);
                 rbRecordTime3.setChecked(true);
-                sendBroadcastToSystemUI("KEY_RECORD_TIME", 3);
+                sendBroadcastToSystemUI("KEY_RECORD_TIME", 180);
                 break;
             case R.id.rb_recording_5:
                 clearRecordingTime();
+                mSharedPreferencesTool.saveRecordTime(5);
                 rbRecordTime5.setChecked(true);
-                sendBroadcastToSystemUI("KEY_RECORD_TIME", 5);
+                sendBroadcastToSystemUI("KEY_RECORD_TIME", 300);
                 break;
         }
     }

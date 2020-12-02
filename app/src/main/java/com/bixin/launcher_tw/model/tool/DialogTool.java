@@ -122,13 +122,14 @@ public class DialogTool {
                 public void onClick(View v) {
                     dismissClose4GDialog();
                     sendBroadcast("CLOSE_4G", true);
+                    InterfaceCallBackManagement.getInstance().updateView(2,true);
                 }
             });
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismissClose4GDialog();
-                    InterfaceCallBackManagement.getInstance().updateView(2,true);
+                    InterfaceCallBackManagement.getInstance().updateView(2,false);
                 }
             });
             close4GDialog = builder.create();

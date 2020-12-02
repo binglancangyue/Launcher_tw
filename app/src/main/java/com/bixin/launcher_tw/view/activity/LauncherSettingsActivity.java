@@ -1,5 +1,6 @@
 package com.bixin.launcher_tw.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,7 +49,7 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("activitytest:LauncherSettingsActivity", "onStart: ");
+        Log.d(TAG, "onStart: ");
     }
 
     @Override
@@ -81,14 +82,14 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("activitytest:LauncherSettingsActivity", "onResume: ");
+        Log.d(TAG, "onResume: ");
         hideOrShowNav(true);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("activitytest:LauncherSettingsActivity", "onStop: ");
+        Log.d(TAG, "onStop: ");
     }
 
     @Override
@@ -96,6 +97,6 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
         super.onDestroy();
         hideOrShowNav(false);
         startActivityTool = null;
-        Log.d("activitytest:LauncherSettingsActivity", "onStop: ");
+        Log.d(TAG, "onStop: ");
     }
 }

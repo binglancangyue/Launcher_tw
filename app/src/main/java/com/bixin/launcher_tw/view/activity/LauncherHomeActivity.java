@@ -229,8 +229,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         rlWIFI = findViewById(R.id.rl_wifi);
         rlCamera.setOnClickListener(this);
         rlWIFI.setOnClickListener(this);
-//        rlFile = findViewById(R.id.rl_file);
-//        rlFile.setOnClickListener(this);
+
         if (Customer.IS_DOUBLE_ROWS) {
             rlFile = findViewById(R.id.rl_file);
             rlBT = findViewById(R.id.rl_bt);
@@ -372,8 +371,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         String className = "com.zsi.powervideo.service.AwakenService";
         intent.setComponent(new ComponentName(packageName, className));
         mContext.startForegroundService(intent);
-        mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
-
+//        mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
     }
 
     private void showSettingWindow() {

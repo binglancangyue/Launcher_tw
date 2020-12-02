@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/SettingsItemStyle"
         android:background="@color/kd003Black"
-        android:paddingBottom="20dp">
+        android:paddingBottom="25dp">
 
         <TextView
             android:id="@+id/tv_screen_auto_title"

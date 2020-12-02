@@ -107,32 +107,6 @@ public class SharedPreferencesTool {
         return timeLevel;
     }
 
-/*
-    public void saveADALevel(int adasLevel) {
-        SharedPreferences.Editor editor = mDVRPreferences.edit();
-        editor.putInt(DVR_ADAS, adasLevel);
-        editor.apply();
-        sendBroadcast("adasLevel", adasLevel, CustomValue.ACTION_SET_ADAS_LEVEL);
-    }
-*/
-
-    public int getADASLevel() {
-        int level = mPreferences.getInt(DVR_ADAS, 1);
-        return level;
-    }
-
-/*    public void saveCollisionLevel(int level) {
-        SharedPreferences.Editor editor = mDVRPreferences.edit();
-        editor.putInt(DVR_COLLISION, level);
-        editor.apply();
-        sendBroadcast("g_sensor", level, CustomValue.ACTION_SET_G_SENSOR_LEVEL);
-    }*/
-
-    public int getCollisionLevel() {
-        int level = mPreferences.getInt(DVR_COLLISION, 1);
-        return level;
-    }
-
     private void sendBroadcast(String name, int value, String action) {
         Intent intent = new Intent(action);
         intent.putExtra(name, value);

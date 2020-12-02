@@ -44,6 +44,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
     private TextView tvGPSState;
     private boolean isOpen4G;
     private boolean isOpenGPS;
+    private static final String TAG = "SettingsLinkActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +81,12 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
         });
         switchGPS = findViewById(R.id.switch_gps);
         switch4G = findViewById(R.id.switch_4g);
+        initData();
         switch4G.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("1231", "onCheckedChanged: " + isChecked);
+                Log.d(TAG, "onCheckedChanged 4G: " + isChecked);
                 if (!mSettingsUtils.isHasSimCard()) {
-                    switch4G.setChecked(false);
                     ToastTool.showToast(R.string.no_sim_card);
                     return;
                 }
@@ -101,7 +102,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
         switchGPS.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("12144", "onCheckedChanged: " + isChecked);
+                Log.d(TAG, "onCheckedChanged GPS: " + isChecked);
                 isOpenGPS = isChecked;
                 if (!isChecked) {
                     mDialogTool.showCloseGPSDialog(mContext);
@@ -112,7 +113,6 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
                 myHandle.sendEmptyMessage(2);
             }
         });
-        initData();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -120,8 +120,10 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
         if (!mSettingsUtils.isHasSimCard()) {
             switch4G.setChecked(false);
             isOpen4G = false;
+            Log.d(TAG, "initData:not sim " + isOpen4G);
         } else {
             isOpen4G = mSettingsUtils.getDataEnabled();
+            Log.d(TAG, "initData:isOpen4G " + isOpen4G);
         }
         isOpenGPS = mSettingsUtils.isGpsOpen();
         switch4G.setChecked(isOpen4G);
@@ -142,6 +144,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     public void updateView(int type, boolean isChecked) {
+        Log.d(TAG, "updateView:isChecked " + isChecked);
         if (type == 1) {
             if (isChecked) {
                 switchGPS.setChecked(isChecked);
@@ -163,8 +166,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     private void open4G() {
         if (mSettingsUtils.isHasSimCard()) {
-            mSettingsUtils.setDataEnabled(!mSettingsUtils.getDataEnabled());
-//            sendBroadcastToSystemUI("CLOSE_GPS", false);
+            mSettingsUtils.setDataEnabled(true);
         } else {
             switch4G.setChecked(false);
             ToastTool.showToast(R.string.no_sim_card);
@@ -177,7 +179,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
         TelephonyManager tm = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE));
         IMEI = tm.getImei(0);
         ICCID = tm.getSimSerialNumber();
-        Log.d("tag", "getIMEI: " + IMEI + " ICCID " + ICCID);
+        Log.d(TAG, "getIMEI: " + IMEI + " ICCID " + ICCID);
     }
 
     private static class MyHandle extends Handler {
