@@ -1,10 +1,8 @@
 package com.bixin.launcher_tw.view.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,9 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
-
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
 
 import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.listener.OnLocationListener;
@@ -87,6 +83,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d(TAG, "onCheckedChanged 4G: " + isChecked);
                 if (!mSettingsUtils.isHasSimCard()) {
+                    switch4G.setChecked(false);
                     ToastTool.showToast(R.string.no_sim_card);
                     return;
                 }

@@ -121,7 +121,7 @@ public class DialogTool {
                 @Override
                 public void onClick(View v) {
                     dismissClose4GDialog();
-                    sendBroadcast("CLOSE_4G", true);
+//                    sendBroadcast("CLOSE_4G", true);
                     InterfaceCallBackManagement.getInstance().updateView(2,true);
                 }
             });

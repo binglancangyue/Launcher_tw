@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
@@ -19,6 +20,8 @@ import androidx.annotation.Nullable;
 import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.tool.DialogTool;
 import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
+import com.bixin.launcher_tw.model.tool.StoragePaTool;
+import com.bixin.launcher_tw.model.tool.ToastTool;
 
 import java.lang.ref.WeakReference;
 
@@ -110,7 +113,11 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
         int id = v.getId();
         switch (id) {
             case R.id.tv_format_sd:
-                mDialogTool.showFormatDialog(mContext);
+                if (StoragePaTool.getStoragePath(true) != null) {
+                    mDialogTool.showFormatDialog(mContext);
+                } else {
+                    ToastTool.showToast(R.string.no_sd_card);
+                }
                 break;
             case R.id.tv_system_settings:
                 Intent intent = new Intent(Settings.ACTION_SETTINGS);

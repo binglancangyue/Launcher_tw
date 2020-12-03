@@ -49,7 +49,7 @@ public class SettingsFunctionTool {
     private static final String TAG = "SettingsFunctionTool";
     private TelephonyManager mTelephonyManager;
     private int lastCount = -1;
-    private PowerManager mPowerManager;
+    //    private PowerManager mPowerManager;
     public static final String fm_power_path = "/sys/class/QN8027/QN8027/power_state";
     public static final String fm_tunetoch_path = "/sys/class/QN8027/QN8027/tunetoch";
     public static final int STREAM_TYPE = AudioManager.STREAM_VOICE_CALL;
@@ -61,7 +61,7 @@ public class SettingsFunctionTool {
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+//        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
     }
 
     public SettingsFunctionTool() {
@@ -72,7 +72,7 @@ public class SettingsFunctionTool {
 //        mFmManager = (FmManager) getSystemService(mContext, ContextDef.FM_SERVICE);
         mTelephonyManager = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
         //        locationManager.addGpsStatusListener(statusListener);
-        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+//        mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
     }
 
 
@@ -305,11 +305,11 @@ public class SettingsFunctionTool {
             int time = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT) / 1000;
             Log.d(TAG, "instance initializer: " + time);
-            if (time <= 60) {
+            if (time >= 15 && time <= 60) {
                 return 1;
-            } else if (time <= 300) {
+            } else if (time > 60 && time <= 180) {
                 return 2;
-            } else if (time <= 1800) {
+            } else if (time > 180 && time <= 300) {
                 return 3;
             } else {
                 return 4;
@@ -379,7 +379,6 @@ public class SettingsFunctionTool {
             return false;
         }
     }
-
 
 
     public boolean ExistSDCard() {
@@ -516,7 +515,7 @@ public class SettingsFunctionTool {
     public boolean getDataEnabled() {
         boolean enabled = false;
         try {
-             SubscriptionInfo subscriptionInfo =
+            SubscriptionInfo subscriptionInfo =
                     SubscriptionManager.from(mContext).getActiveSubscriptionInfoForSimSlotIndex(0);
             if (subscriptionInfo == null) {
                 Log.d(TAG, "getDataEnabled:subscriptionInfo==null ");

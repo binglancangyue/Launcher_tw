@@ -57,4 +57,5 @@
     <string name="state_off">已關閉</string>
     <string name="device_control">裝置操作</string>
     <string name="tv_other_settings">系統設定</string>
+    <string name="no_sd_card">未檢測到SD卡</string>
 </resources>
