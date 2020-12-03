@@ -8,7 +8,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/SettingsItemStyle"
         android:background="@color/kd003Black"
-        android:paddingBottom="25dp">
+        android:paddingBottom="35dp">
 
         <TextView
             android:id="@+id/tv_screen_auto_title"
@@ -122,11 +122,11 @@
 
 
         <SeekBar
+            android:paddingVertical="@dimen/itemHorizontal"
             android:id="@+id/skb_screen_brightness"
             style="@style/SeekBarStyle"
             android:layout_width="0dp"
             android:layout_marginHorizontal="@dimen/itemHorizontal"
-            android:layout_marginTop="@dimen/itemHorizontal"
             android:maxHeight="8dp"
             android:minHeight="8dp"
             android:thumbOffset="10dp"
@@ -154,7 +154,7 @@
             android:id="@+id/view_line_3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="@dimen/itemVertical"
+            android:layout_marginTop="4dp"
             android:background="@drawable/shape_linearlayout_divider_v"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/skb_screen_brightness" />
@@ -173,11 +173,11 @@
             style="@style/SeekBarStyle"
             android:layout_width="0dp"
             android:layout_marginHorizontal="@dimen/itemHorizontal"
-            android:layout_marginTop="@dimen/itemHorizontal"
             android:max="15"
             android:maxHeight="8dp"
             android:minHeight="8dp"
             android:thumbOffset="10dp"
+            android:paddingVertical="@dimen/itemHorizontal"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/tv_volume_value"
