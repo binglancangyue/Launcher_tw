@@ -9,6 +9,7 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/build/output-metadata.json
 /captures
 .externalNativeBuild
 .cxx
@@ -98,4 +99,3 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
-
