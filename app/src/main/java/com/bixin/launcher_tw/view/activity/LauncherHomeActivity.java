@@ -2,13 +2,11 @@ package com.bixin.launcher_tw.view.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,10 +21,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bixin.launcher_tw.R;
-import com.bixin.launcher_tw.model.LauncherApp;
 import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.listener.OnLocationListener;
 import com.bixin.launcher_tw.model.receiver.APPReceiver;
@@ -36,14 +32,9 @@ import com.bixin.launcher_tw.model.tool.RequestPermissionTool;
 import com.bixin.launcher_tw.model.tool.SharePreferencesTool;
 import com.bixin.launcher_tw.model.tool.StartActivityTool;
 import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.components.RxActivity;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -94,7 +85,6 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             view = getLayoutInflater().inflate(R.layout.activity_home_kd003, null);
         } else {
             view = getLayoutInflater().inflate(R.layout.activity_home, null);
-
         }
         setContentView(view);
         Log.d(TAG, "onCreate: ");
@@ -212,11 +202,22 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
                 mActivity.startDVRService();
             }
             if (msg.what == 3) {
-                mActivity.registerMobileDataReceiver();
+                mActivity.mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
                 mActivity.startUploadService();
                 mActivity.checkPhoneNumber();
             }
+            if (msg.what == 4) {
+                mActivity.sendStateCode();
+            }
         }
+    }
+
+    private void sendStateCode() {
+        Intent it = new Intent(Customer.ACTION_TW_STATE);
+        it.putExtra("machineState", 0);
+        sendBroadcast(it);
+//        Intent intent = new Intent("com.transiot.kardidvr003.healthcheck");
+//        sendBroadcast(intent);
     }
 
     private void updateGpsSpeed(String s) {
@@ -265,13 +266,15 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
     }
 
     private void registerAppReceiver() {
-        IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Customer.ACTION_TXZ_CUSTOM_COMMAND);
-        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        filter.addDataScheme("package");
+//        IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+//        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+//        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+//        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+//        filter.addAction(Customer.ACTION_TXZ_CUSTOM_COMMAND);
+//        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+//        filter.addDataScheme("package");
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Customer.ACTION_TW_STATE);
         registerReceiver(mReceiver, filter);
     }
 
@@ -300,6 +303,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             registerAppReceiver();
             myHandle.sendEmptyMessageDelayed(2, 4000);
             myHandle.sendEmptyMessageDelayed(3, 10000);
+            myHandle.sendEmptyMessageDelayed(4, 12000);
         }));
     }
 

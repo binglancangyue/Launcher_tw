@@ -1,6 +1,9 @@
 package com.bixin.launcher_tw.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
@@ -10,8 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.tool.SettingsFunctionTool;
 import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
+
+import java.lang.ref.WeakReference;
 
 public class SettingsScreenActivity extends BaseAppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "SettingsScreenActivity";
@@ -27,7 +33,12 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
     private SharedPreferencesTool mSharedPreferencesTool;
     private TextView tvVolume;
     private TextView tvScreen;
-    private boolean isLight = false;
+    private int colorWhite;
+    private int colorDisEnable;
+    private MyHandle myHandle;
+    private TextView tvTimeTitle;
+    private static final String SCREEN_TYPE = "bx_screen_type";
+    private static final String SCREEN_TIME = "bx_screen_time";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +48,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
 
     @Override
     protected void initView() {
+        tvTimeTitle = findViewById(R.id.tv_standby_time_tile);
         skbScreen = findViewById(R.id.skb_screen_brightness);
         skbVolume = findViewById(R.id.skb_volume_adjustment);
         rbtSaver = findViewById(R.id.rb_screen_mode_saver);
@@ -47,6 +59,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         rbtTime5 = findViewById(R.id.rb_standby_time_5);
         tvScreen = findViewById(R.id.tv_screen_value);
         tvVolume = findViewById(R.id.tv_volume_value);
+        skbVolume.setMax(mSettingsUtils.getMaxValue(SettingsFunctionTool.STREAM_TYPE));
         skbScreen.setOnSeekBarChangeListener(this);
         skbVolume.setOnSeekBarChangeListener(this);
         rbtSaver.setOnClickListener(this);
@@ -55,13 +68,16 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         rbtTime1.setOnClickListener(this);
         rbtTime3.setOnClickListener(this);
         rbtTime5.setOnClickListener(this);
+        colorWhite = getResources().getColor(R.color.colorWhite);
+        colorDisEnable = getResources().getColor(R.color.colorEnable);
         initData();
     }
 
     @Override
     protected void init() {
+        myHandle = new MyHandle(this);
         mSettingsUtils = new SettingsFunctionTool();
-        mSharedPreferencesTool = new SharedPreferencesTool();
+        mSharedPreferencesTool = new SharedPreferencesTool(this);
     }
 
     @Override
@@ -92,12 +108,26 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         // max ScreenOffTimeOut
         if (mSharedPreferencesTool.isFirstStart()) {
             setMaxScreenOffTimeOut();
+            rbtTimeEnable(false);
             mSharedPreferencesTool.saveFirstStart();
             return;
         }
         Log.d(TAG, "initScreenOutTime: " + timeType);
         clearScreenMode();
         clearTimeSelected();
+        updateRbtTime(timeType);
+        if (timeType != 4) {
+            int screenType = getScreenType();
+            Log.d(TAG, "initScreenType " + screenType);
+            if (screenType == 0) {
+                rbtClose.setChecked(true);
+            } else {
+                rbtSaver.setChecked(true);
+            }
+        }
+    }
+
+    private void updateRbtTime(int timeType) {
         if (timeType == 1) {
             rbtTime1.setChecked(true);
             mSettingsUtils.setScreenOffTimeOut(60 * 1000);
@@ -110,19 +140,9 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         } else {
             mSettingsUtils.setScreenOffTimeOut(Integer.MAX_VALUE);
             rbtLight.setChecked(true);
-            isLight = true;
-        }
-        if (timeType != 4) {
-            if (mSharedPreferencesTool.getInt("SCREEN_TYPE", 1) == 0) {
-                rbtClose.setChecked(true);
-                sendBroadcastToSystemUI("CLOSE_SCREEN");
-            } else {
-                rbtSaver.setChecked(true);
-                sendBroadcastToSystemUI("SAVER");
-            }
+            rbtTimeEnable(false);
         }
     }
-
 
     /**
      * 根据系统音量更新声音进度条
@@ -131,6 +151,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         int volume = mSettingsUtils.getCurrentVolume();
         tvVolume.setText(String.valueOf(volume));
         skbVolume.setProgress(volume);
+        Log.d(TAG, "updateVolume: " + volume);
     }
 
     private void updateVolumeByProgress(int value) {
@@ -158,7 +179,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
     }
 
     private void setMaxScreenOffTimeOut() {
-        clearTimeSelected();
+//        clearTimeSelected();
         clearScreenMode();
         rbtLight.setChecked(true);
         mSettingsUtils.setScreenOffTimeOut(Integer.MAX_VALUE);
@@ -193,63 +214,106 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         switch (viewID) {
             case R.id.rb_standby_time_1:
                 clearTimeSelected();
+                Settings.Global.putInt(getContentResolver(), SCREEN_TIME, 1);
                 mSettingsUtils.setScreenOffTimeOut(60 * 1000);
                 rbtTime1.setChecked(true);
-                closeAlwaysBright();
                 break;
             case R.id.rb_standby_time_3:
                 clearTimeSelected();
+                Settings.Global.putInt(getContentResolver(), SCREEN_TIME, 2);
                 mSettingsUtils.setScreenOffTimeOut(180 * 1000);
                 rbtTime3.setChecked(true);
-                closeAlwaysBright();
                 break;
             case R.id.rb_standby_time_5:
                 clearTimeSelected();
+                Settings.Global.putInt(getContentResolver(), SCREEN_TIME, 3);
                 mSettingsUtils.setScreenOffTimeOut(300 * 1000);
                 rbtTime5.setChecked(true);
-                closeAlwaysBright();
                 break;
             case R.id.rb_screen_mode_close:
-                aa();
+                Log.d(TAG, "onClick: rb_screen_mode_close");
+                myHandle.sendEmptyMessage(0);
                 clearScreenMode();
                 rbtClose.setChecked(true);
-                sendBroadcastToSystemUI("CLOSE_SCREEN");
-                mSharedPreferencesTool.saveInt("SCREEN_TYPE", 0);
+                Settings.Global.putInt(getContentResolver(), SCREEN_TYPE, 0);
+                clickScreenTypeSetTime();
                 break;
             case R.id.rb_screen_mode_light:
                 clearScreenMode();
-                isLight = true;
-                mSharedPreferencesTool.saveBoolean("ALWAYS_BRIGHT", true);
+                myHandle.sendEmptyMessage(1);
                 setMaxScreenOffTimeOut();
                 rbtLight.setChecked(true);
                 break;
             case R.id.rb_screen_mode_saver:
-                aa();
+                myHandle.sendEmptyMessage(0);
                 clearScreenMode();
-                sendBroadcastToSystemUI("SAVER");
+                Settings.Global.putInt(getContentResolver(), SCREEN_TYPE, 1);
                 rbtSaver.setChecked(true);
-                mSharedPreferencesTool.saveInt("SCREEN_TYPE", 0);
+                clickScreenTypeSetTime();
                 break;
         }
     }
 
-    private void closeAlwaysBright() {
-        if (isLight) {
-            isLight = false;
-            mSharedPreferencesTool.saveBoolean("ALWAYS_BRIGHT", false);
-            clearScreenMode();
-            rbtSaver.setChecked(true);
+    private void clickScreenTypeSetTime() {
+        try {
+            updateRbtTime(Settings.Global.getInt(getContentResolver(), SCREEN_TIME));
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
-    private void aa() {
-        if (isLight) {
-            isLight = false;
-            clearTimeSelected();
-            mSharedPreferencesTool.saveBoolean("ALWAYS_BRIGHT", false);
-            mSettingsUtils.setScreenOffTimeOut(60 * 1000);
-            rbtTime1.setChecked(true);
+    private int getScreenType() {
+        return Settings.Global.getInt(getContentResolver(), SCREEN_TYPE, 1);
+    }
+
+    private void rbtTimeEnable(boolean enable) {
+        rbtTime5.setEnabled(enable);
+        rbtTime3.setEnabled(enable);
+        rbtTime1.setEnabled(enable);
+        int color;
+        if (enable) {
+            color = colorWhite;
+            int type = Settings.Global.getInt(getContentResolver(), SCREEN_TIME, -1);
+            if (type == -1) {
+                updateRbtTime(1);
+            }
+            Log.d(TAG, "rbtTimeEnable:type " + type);
+        } else {
+            color = colorDisEnable;
+        }
+        tvTimeTitle.setTextColor(color);
+        rbtTime5.setTextColor(color);
+        rbtTime3.setTextColor(color);
+        rbtTime1.setTextColor(color);
+    }
+
+    private static class MyHandle extends Handler {
+        private SettingsScreenActivity mActivity;
+
+        MyHandle(SettingsScreenActivity activity) {
+            WeakReference<SettingsScreenActivity> reference =
+                    new WeakReference<>(activity);
+            this.mActivity = reference.get();
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                mActivity.rbtTimeEnable(false);
+            }
+            if (msg.what == 0) {
+                mActivity.rbtTimeEnable(true);
+            }
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (myHandle != null) {
+            myHandle.removeCallbacksAndMessages(null);
+            myHandle = null;
+        }
+    }
 }

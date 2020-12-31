@@ -27,10 +27,11 @@ public class APPReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        Log.d("APPReceiver", "onReceive:action " + action);
+
         if (action == null) {
             return;
         }
-        Log.d("APPReceiver", "onReceive:action " + action);
         if (action.equals(Intent.ACTION_PACKAGE_REMOVED) ||
                 action.equals(Intent.ACTION_PACKAGE_ADDED)) {
             LauncherApp.getInstance().initAppList();
@@ -47,6 +48,10 @@ public class APPReceiver extends BroadcastReceiver {
                 Intent intent1 = new Intent(context, AppListActivity.class);
                 LauncherApp.getInstance().startActivity(intent1);
             }
+        }
+        if (action.equals(Customer.ACTION_TW_STATE)){
+            Log.d("tag", "onReceive:kardidvr003 "
+                    +intent.getIntExtra("machineState",-1));
         }
         if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             NetworkInfo info =
@@ -73,7 +78,7 @@ public class APPReceiver extends BroadcastReceiver {
                         }
                         Intent launchIntent = LauncherApp.getInstance().getPackageManager().getLaunchIntentForPackage(Customer.PACKAGE_NAME_DVR3_TW);
                         if (launchIntent == null) {
-                            String s = LauncherApp.getInstance().getString(R.string.app_not_install);
+                            String s = LauncherApp.getInstance().getString(R.string.app_not_install);9
                             ToastTool.showToast(s + "\n" + Customer.PACKAGE_NAME_DVR3_TW);
                         } else {
 //                            SharePreferencesTool.getInstance().saveBoolean("isFirstStart", false);

@@ -26,8 +26,8 @@ public class SharedPreferencesTool {
     public static final int TIME_INTERVAL_5_MINUTE = 60 * 5;
 
     @SuppressLint("CommitPrefEdits")
-    public SharedPreferencesTool() {
-        this.mContext = LauncherApp.getInstance();
+    public SharedPreferencesTool(Context context) {
+        this.mContext = context;
         this.mPreferences = mContext.getSharedPreferences(Customer.SP_NAME,
                 Context.MODE_PRIVATE);
         this.mEditor = mPreferences.edit();
@@ -48,13 +48,22 @@ public class SharedPreferencesTool {
         return mPreferences.getInt("name", defValue);
     }
 
+    public int getScreenType() {
+        return mPreferences.getInt("SETTINGS_SCREEN_TYPE", 1);
+    }
+
+    public void setScreenType(int value) {
+        mEditor.putInt("SETTINGS_SCREEN_TYPE", value);
+        mEditor.apply();
+    }
+
     public void saveBoolean(String name, boolean value) {
         mEditor.putBoolean(name, value);
         mEditor.apply();
     }
 
     public boolean getBoolean(String name, boolean value) {
-       return mPreferences.getBoolean(name, value);
+        return mPreferences.getBoolean(name, value);
     }
 
     public boolean isFirstStart() {

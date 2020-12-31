@@ -52,7 +52,7 @@ public class SettingsFunctionTool {
     //    private PowerManager mPowerManager;
     public static final String fm_power_path = "/sys/class/QN8027/QN8027/power_state";
     public static final String fm_tunetoch_path = "/sys/class/QN8027/QN8027/tunetoch";
-    public static final int STREAM_TYPE = AudioManager.STREAM_VOICE_CALL;
+    public static final int STREAM_TYPE = AudioManager.STREAM_MUSIC;
     public static final String EXTRA_FORMAT_PRIVATE = "format_private";
     public static final String EXTRA_FORGET_UUID = "forget_uuid";
 
@@ -128,7 +128,9 @@ public class SettingsFunctionTool {
     public int getScreenBrightnessPercentageValue() {
 //        double value = (int) (getScreenBrightness() / baseValue);
 //        return (int) Math.floor(value);
-        String s = NumberFormat.getPercentInstance().format(getCurrentBrightness());
+        double value = getCurrentBrightness();
+        Log.d(TAG, "getScreenBrightnessPercentageValue: " + value);
+        String s = NumberFormat.getPercentInstance().format(value);
         s = s.replace("%", "");
         return Integer.parseInt(s);
     }
@@ -408,8 +410,8 @@ public class SettingsFunctionTool {
 
     private double getCurrentBrightness() {
         ContentResolver contentResolver = mContext.getContentResolver();
-        final int mMinBrightness = 255;
-        final int mMaxBrightness = 1;
+        final int mMinBrightness = 1;
+        final int mMaxBrightness = 255;
         final double value = Settings.System.getInt(contentResolver,
                 Settings.System.SCREEN_BRIGHTNESS, mMinBrightness);
         return getPercentage(value, mMinBrightness, mMaxBrightness);

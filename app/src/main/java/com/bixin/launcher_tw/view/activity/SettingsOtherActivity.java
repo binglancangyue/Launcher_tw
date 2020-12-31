@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
@@ -27,6 +27,7 @@ import java.lang.ref.WeakReference;
 
 public class SettingsOtherActivity extends BaseAppCompatActivity {
     private static final String TAG = "SettingsOtherActivity";
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch switchADAS;
     private TextView tvFormat;
     private TextView tvSystem;
@@ -77,7 +78,7 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
     protected void init() {
         myHandle = new MyHandle(this);
         mDialogTool = new DialogTool(this);
-        mSharedPreferencesTool = new SharedPreferencesTool();
+        mSharedPreferencesTool = new SharedPreferencesTool(this);
         color = getResources().getColor(R.color.colorChecked);
     }
 
@@ -180,13 +181,13 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("activitytest:SettingsOtherActivity", "onResume: ");
+        Log.d(TAG, "onResume: ");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("activitytest:SettingsOtherActivity", "onPause: ");
+        Log.d(TAG, "onPause: ");
     }
 
     @SuppressLint("LongLogTag")
@@ -194,6 +195,11 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.d("activitytest:SettingsOtherActivity", "onStop: ");
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
     }
 
     @Override

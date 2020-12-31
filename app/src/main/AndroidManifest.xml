@@ -45,6 +45,9 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
+   <!-- <protected-broadcast
+        android:name="com.transiot.kardidvr003.driving.setting" />-->
+
     <application
         android:name=".model.LauncherApp"
         android:allowBackup="true"
@@ -95,6 +98,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="dd8b286c9ef0d6c4ec4f5213aec88d94" />
+
     </application>
 
 </manifest>

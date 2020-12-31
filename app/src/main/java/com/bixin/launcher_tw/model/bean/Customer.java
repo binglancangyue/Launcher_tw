@@ -22,8 +22,9 @@ public class Customer {
     public final static String PACKAGE_NAME_DVR2_TW = "com.msig.mingtai.dvr002app";
     public final static String PACKAGE_NAME_DVR3_TW = "com.transiot.kardidvr003";
     public final static String ACTION_HIDE_NAVIGATION = "com.bixin.launcher.action.hide_navigation";
-    public final static String ACTION_SETTINGS_FUNCTION="com.bixin.launcher.action.settings_function";
+    public final static String ACTION_SETTINGS_FUNCTION = "com.bixin.launcher.action.settings_function";
     public static final String ACTION_SET_DVR_RECORD_TIME = "com.android.systemui.SET_DVR_RECORD_TIME";
+    public static final String ACTION_TW_STATE = "com.transiot.kardidvr003.machineState";
     public final static String SP_NAME = "launcher_settings";
 
     public static final String SYSTEM_UI_KEY="key_type";

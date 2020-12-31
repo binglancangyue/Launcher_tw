@@ -35,23 +35,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="14dp"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="20dp"
             android:text="@string/cancel"
             android:textColor="#e6654e"
-            android:textSize="22sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tv_dialog_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="15dp"
             android:background="?attr/selectableItemBackground"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="14dp"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="20dp"
             android:text="@string/ok"
             android:textColor="#e6654e"
-            android:textSize="22sp" />
+            android:textSize="24sp" />
     </LinearLayout>
 
 </LinearLayout>

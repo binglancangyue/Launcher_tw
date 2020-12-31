@@ -1,6 +1,5 @@
 package com.bixin.launcher_tw.view.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,4 +98,5 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
         startActivityTool = null;
         Log.d(TAG, "onStop: ");
     }
+
 }
