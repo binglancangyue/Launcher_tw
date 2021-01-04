@@ -78,7 +78,7 @@ public class APPReceiver extends BroadcastReceiver {
                         }
                         Intent launchIntent = LauncherApp.getInstance().getPackageManager().getLaunchIntentForPackage(Customer.PACKAGE_NAME_DVR3_TW);
                         if (launchIntent == null) {
-                            String s = LauncherApp.getInstance().getString(R.string.app_not_install);9
+                            String s = LauncherApp.getInstance().getString(R.string.app_not_install);
                             ToastTool.showToast(s + "\n" + Customer.PACKAGE_NAME_DVR3_TW);
                         } else {
 //                            SharePreferencesTool.getInstance().saveBoolean("isFirstStart", false);

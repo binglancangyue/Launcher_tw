@@ -13,9 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bixin.launcher_tw.R;
-import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.tool.SettingsFunctionTool;
 import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
+import com.bixin.launcher_tw.view.base.BaseAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -68,8 +68,6 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
         rbtTime1.setOnClickListener(this);
         rbtTime3.setOnClickListener(this);
         rbtTime5.setOnClickListener(this);
-        colorWhite = getResources().getColor(R.color.colorWhite);
-        colorDisEnable = getResources().getColor(R.color.colorEnable);
         initData();
     }
 
@@ -86,6 +84,8 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
     }
 
     private void initData() {
+        colorWhite = getResources().getColor(R.color.colorWhite);
+        colorDisEnable = getResources().getColor(R.color.colorEnable);
         updateVolume();
         updateBrightness();
         initScreenOutTime();
@@ -110,6 +110,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
             setMaxScreenOffTimeOut();
             rbtTimeEnable(false);
             mSharedPreferencesTool.saveFirstStart();
+            Settings.Global.putInt(getContentResolver(), SCREEN_TYPE, 0);
             return;
         }
         Log.d(TAG, "initScreenOutTime: " + timeType);
@@ -243,6 +244,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
                 myHandle.sendEmptyMessage(1);
                 setMaxScreenOffTimeOut();
                 rbtLight.setChecked(true);
+                Settings.Global.putInt(getContentResolver(), SCREEN_TYPE, 0);
                 break;
             case R.id.rb_screen_mode_saver:
                 myHandle.sendEmptyMessage(0);

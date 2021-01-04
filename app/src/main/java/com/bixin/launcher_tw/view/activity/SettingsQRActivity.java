@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.view.base.BaseAppCompatActivity;
 
 public class SettingsQRActivity extends BaseAppCompatActivity {
     @Override

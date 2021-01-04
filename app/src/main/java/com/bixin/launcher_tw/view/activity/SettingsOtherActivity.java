@@ -22,6 +22,7 @@ import com.bixin.launcher_tw.model.tool.DialogTool;
 import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
 import com.bixin.launcher_tw.model.tool.StoragePaTool;
 import com.bixin.launcher_tw.model.tool.ToastTool;
+import com.bixin.launcher_tw.view.base.BaseAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -164,6 +165,7 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
             super.dispatchMessage(msg);
             if (msg.what == 1) {
                 mActivity.updateSenSorState();
+                removeMessages(msg.what);
             }
         }
     }
@@ -205,6 +207,9 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mDialogTool != null) {
+            mDialogTool.dismissDialog();
+        }
         if (myHandle != null) {
             myHandle.removeCallbacksAndMessages(null);
             myHandle = null;

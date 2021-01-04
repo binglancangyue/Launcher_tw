@@ -1,6 +1,5 @@
 package com.bixin.launcher_tw.view.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.Switch;
@@ -8,6 +7,7 @@ import android.widget.Switch;
 import androidx.annotation.Nullable;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.view.base.BaseAppCompatActivity;
 
 public class SettingsADASActivity extends BaseAppCompatActivity {
     private static final String TAG = "SettingsADASActivity";
