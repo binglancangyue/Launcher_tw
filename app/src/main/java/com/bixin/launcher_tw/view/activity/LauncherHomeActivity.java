@@ -108,9 +108,6 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_camera:
-//                adfasdfas();
-//                    sendTest("adb shell input keyevent  26");
-//                sendKeyCode(KeyEvent.KEYCODE_POWER);
                 if (Customer.IS_KD003) {
                     mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_ViDEO_PLAY_BACK);
                 } else {
@@ -156,7 +153,6 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             default:
                 break;
         }
-
     }
 
     @Override
@@ -169,6 +165,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         intent.putExtra("KEY_HIDE", isHide);
         sendBroadcast(intent);
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.e(TAG, "onKeyDown: keyCode " + keyCode);

@@ -4,5 +4,5 @@
     <corners android:radius="@dimen/shape_radius15" />
 
     <!-- 填充颜色 -->
-    <solid android:color="#fe9557" />
+    <solid android:color="#fa6d18" />
 </shape>

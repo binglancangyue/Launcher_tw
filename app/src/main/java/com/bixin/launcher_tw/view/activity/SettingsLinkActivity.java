@@ -181,7 +181,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
     }
 
     private static class MyHandle extends Handler {
-        private SettingsLinkActivity mActivity;
+        private final SettingsLinkActivity mActivity;
 
         public MyHandle(SettingsLinkActivity activity) {
             WeakReference<SettingsLinkActivity> weakReference = new WeakReference<>(activity);
