@@ -52,4 +52,10 @@ public class InterfaceCallBackManagement {
         }
     }
 
+    public void changeAirMode() {
+        if (mOnLocationListener != null) {
+            mOnLocationListener.changeAirMode();
+        }
+    }
+
 }

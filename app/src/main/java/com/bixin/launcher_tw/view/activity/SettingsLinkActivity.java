@@ -26,6 +26,7 @@ import com.bixin.launcher_tw.model.tool.ToastTool;
 import com.bixin.launcher_tw.view.base.BaseAppCompatActivity;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Method;
 
 public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLocationListener.OnUpdateViewListener {
     private DialogTool mDialogTool;
@@ -34,6 +35,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
     private Switch switch4G;
     private String IMEI = null;
     private String ICCID = null;
+    private String SN = null;
     private SettingsFunctionTool mSettingsUtils;
     private int color;
     private MyHandle myHandle;
@@ -57,6 +59,7 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
         InterfaceCallBackManagement.getInstance().setOnUpdateViewListener(this);
         color = getResources().getColor(R.color.colorChecked);
         getIMEIAndICCID();
+        SN = mSettingsUtils.getSN();
     }
 
     @Override
@@ -133,10 +136,11 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
     private void jump() {
         Intent it = new Intent("com.transiot.kardidvr003.qrcode");
         it.putExtra("guid", "kd003"); // guid  String
-        it.putExtra("sn", "DVR"); // DVR String
+        it.putExtra("sn", SN); // DVR String
         it.putExtra("imei", IMEI); // IMEI String
         it.putExtra("iccid", ICCID); // Sim ICCID sendBroadcast(it); String
         sendBroadcast(it);
+        Log.d(TAG, "send to kardidvr003: IMEI: " + IMEI + " ICCID: " + ICCID + " SN: " + SN);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
@@ -177,7 +181,6 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
         TelephonyManager tm = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE));
         IMEI = tm.getImei(0);
         ICCID = tm.getSimSerialNumber();
-        Log.d(TAG, "getIMEI: " + IMEI + " ICCID " + ICCID);
     }
 
     private static class MyHandle extends Handler {

@@ -48,6 +48,7 @@ public class ToastTool {
         }
         toast.show();
     }
+
     public static void showToast(String text) {
         if (toast == null) {
             toast = Toast.makeText(LauncherApp.getInstance(), text, Toast.LENGTH_SHORT);

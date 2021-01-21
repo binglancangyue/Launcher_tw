@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +25,9 @@ import androidx.annotation.RequiresApi;
 
 import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.LauncherApp;
+import com.bixin.launcher_tw.model.bean.Customer;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
@@ -286,6 +289,53 @@ public class StartActivityTool {
         // 向联系人电话号码URI添加电话号码
         mResolver.insert(ContactsContract.Data.CONTENT_URI, values);
         values.clear();
+    }
+
+    private boolean isAirplaneModeOn() {
+        int state = Settings.Global.getInt(LauncherApp.getInstance().getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_ON, 0);
+        if (state == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void startValidationTools() {
+        if (!Customer.IS_START_TEST_APP) {
+            return;
+        }
+        String path = StoragePaTool.getStoragePath(true);
+        Log.d(TAG, "startValidationTools: " + path);
+        if (path != null) {
+            path = path + "/BixinTest";
+            File file = new File(path);
+            if (file.exists()) {
+                Intent intent = new Intent();
+                ComponentName cn = new ComponentName("com.sprd.validationtools",
+                        "com.sprd.validationtools.ValidationToolsMainActivity");
+                intent.setComponent(cn);
+                mContext.startActivity(intent);
+                Log.d(TAG, "startValidationTools: OK");
+            } else {
+                Log.d(TAG, "startValidationTools: !exists");
+            }
+        }
+    }
+
+    public void changeAirplaneModeSystemSetting(boolean on) {
+        boolean currentState = isAirplaneModeOn();
+        Log.i(TAG, "changeAirplaneModeSystemSetting() on=" + on + ",currentState=" + currentState);
+        if (currentState != on) {
+            Settings.Global.putInt(
+                    LauncherApp.getInstance().getContentResolver(),
+                    Settings.Global.AIRPLANE_MODE_ON,
+                    on ? 1 : 0);
+            Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+            intent.putExtra("state", on);
+            LauncherApp.getInstance().sendBroadcast(intent);
+        }
     }
 
 }

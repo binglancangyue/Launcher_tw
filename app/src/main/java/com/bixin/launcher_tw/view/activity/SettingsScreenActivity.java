@@ -37,38 +37,38 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
     private int colorDisEnable;
     private MyHandle myHandle;
     private TextView tvTimeTitle;
-    private static final String SCREEN_TYPE = "bx_screen_type";
-    private static final String SCREEN_TIME = "bx_screen_time";
+    public static final String SCREEN_TYPE = "bx_screen_type";
+    public static final String SCREEN_TIME = "bx_screen_time";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     protected void initView() {
-        tvTimeTitle = findViewById(R.id.tv_standby_time_tile);
-        skbScreen = findViewById(R.id.skb_screen_brightness);
-        skbVolume = findViewById(R.id.skb_volume_adjustment);
-        rbtSaver = findViewById(R.id.rb_screen_mode_saver);
-        rbtLight = findViewById(R.id.rb_screen_mode_light);
-        rbtClose = findViewById(R.id.rb_screen_mode_close);
-        rbtTime1 = findViewById(R.id.rb_standby_time_1);
-        rbtTime3 = findViewById(R.id.rb_standby_time_3);
-        rbtTime5 = findViewById(R.id.rb_standby_time_5);
-        tvScreen = findViewById(R.id.tv_screen_value);
-        tvVolume = findViewById(R.id.tv_volume_value);
-        skbVolume.setMax(mSettingsUtils.getMaxValue(SettingsFunctionTool.STREAM_TYPE));
-        skbScreen.setOnSeekBarChangeListener(this);
-        skbVolume.setOnSeekBarChangeListener(this);
-        rbtSaver.setOnClickListener(this);
-        rbtLight.setOnClickListener(this);
-        rbtClose.setOnClickListener(this);
-        rbtTime1.setOnClickListener(this);
-        rbtTime3.setOnClickListener(this);
-        rbtTime5.setOnClickListener(this);
-        initData();
+        getWindow().getDecorView().post(() -> myHandle.post(() -> {
+            tvTimeTitle = findViewById(R.id.tv_standby_time_tile);
+            skbScreen = findViewById(R.id.skb_screen_brightness);
+            skbVolume = findViewById(R.id.skb_volume_adjustment);
+            rbtSaver = findViewById(R.id.rb_screen_mode_saver);
+            rbtLight = findViewById(R.id.rb_screen_mode_light);
+            rbtClose = findViewById(R.id.rb_screen_mode_close);
+            rbtTime1 = findViewById(R.id.rb_standby_time_1);
+            rbtTime3 = findViewById(R.id.rb_standby_time_3);
+            rbtTime5 = findViewById(R.id.rb_standby_time_5);
+            tvScreen = findViewById(R.id.tv_screen_value);
+            tvVolume = findViewById(R.id.tv_volume_value);
+            skbScreen.setOnSeekBarChangeListener(this);
+            skbVolume.setOnSeekBarChangeListener(this);
+            rbtSaver.setOnClickListener(this);
+            rbtLight.setOnClickListener(this);
+            rbtClose.setOnClickListener(this);
+            rbtTime1.setOnClickListener(this);
+            rbtTime3.setOnClickListener(this);
+            rbtTime5.setOnClickListener(this);
+            initData();
+        }));
     }
 
     @Override
@@ -84,6 +84,7 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
     }
 
     private void initData() {
+        skbVolume.setMax(mSettingsUtils.getMaxValue(SettingsFunctionTool.STREAM_TYPE));
         colorWhite = getResources().getColor(R.color.colorWhite);
         colorDisEnable = getResources().getColor(R.color.colorEnable);
         updateVolume();

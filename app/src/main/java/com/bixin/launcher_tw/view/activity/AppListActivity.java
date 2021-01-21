@@ -44,7 +44,6 @@ public class AppListActivity extends Activity implements OnRecyclerViewItemListe
         initView();
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();

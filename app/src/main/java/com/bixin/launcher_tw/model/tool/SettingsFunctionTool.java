@@ -239,6 +239,11 @@ public class SettingsFunctionTool {
                 AudioManager.FLAG_PLAY_SOUND);
     }
 
+    public void setVolume(int volume,int type) {
+        audioManager.setStreamVolume(type, volume,
+                AudioManager.FLAG_PLAY_SOUND);
+    }
+
     /**
      * 蓝牙是否开启
      *
@@ -534,5 +539,39 @@ public class SettingsFunctionTool {
         }
         return enabled;
     }
+
+    /**
+     * 获取SN
+     *
+     * @return
+     */
+    public String getSN() {
+        String serial = "";
+        //通过android.os获取sn号
+        try {
+            serial = android.os.Build.SERIAL;
+            if (!serial.equals("") && !serial.equals("unknown")) {
+                return serial;
+            }
+        } catch (Exception e) {
+            serial = "";
+        }
+        try {
+            Class<?> c = Class.forName("android.os.SystemProperties");
+            Method get = c.getMethod("get", String.class);
+            serial = (String) get.invoke(c, "ro.serialno");
+            if (!serial.equals("") && !serial.equals("unknown")) {
+                return serial;
+            }
+            //9.0及以上无法获取到sn，此方法为补充，能够获取到多数高版本手机 sn
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                serial = Build.getSerial();
+            }
+        } catch (Exception e) {
+            serial = "";
+        }
+        return serial;
+    }
+
 
 }

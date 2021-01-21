@@ -22,7 +22,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity implements
         initView();
     }
 
-    private void hideOrShowNav(boolean isHide) {
+    protected void hideOrShowNav(boolean isHide) {
         Intent intent = new Intent(Customer.ACTION_HIDE_NAVIGATION);
         intent.putExtra("KEY_HIDE", isHide);
         sendBroadcast(intent);

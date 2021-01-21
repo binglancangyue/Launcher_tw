@@ -14,7 +14,7 @@ import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.tool.StartActivityTool;
 
 public class LauncherSettingsActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "LauncherSettingsActivity";
+    private static final String TAG = LauncherSettingsActivity.class.getName();
     private LinearLayout llOther;
     private LinearLayout llADAS;
     private LinearLayout llLink;

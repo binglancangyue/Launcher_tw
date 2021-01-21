@@ -2,16 +2,18 @@ package com.bixin.launcher_tw.view.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -26,22 +28,31 @@ import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.listener.OnLocationListener;
 import com.bixin.launcher_tw.model.receiver.APPReceiver;
+import com.bixin.launcher_tw.model.tool.FileOperationTool;
 import com.bixin.launcher_tw.model.tool.InterfaceCallBackManagement;
 import com.bixin.launcher_tw.model.tool.LocationManagerTool;
 import com.bixin.launcher_tw.model.tool.RequestPermissionTool;
+import com.bixin.launcher_tw.model.tool.SettingsFunctionTool;
 import com.bixin.launcher_tw.model.tool.SharePreferencesTool;
+import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
 import com.bixin.launcher_tw.model.tool.StartActivityTool;
+import com.bixin.launcher_tw.model.tool.StoragePaTool;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.bixin.launcher_tw.view.activity.SettingsScreenActivity.SCREEN_TYPE;
 
 /**
  * @author Altair
@@ -65,7 +76,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.WRITE_CONTACTS,};
 
-    private int speeds;
+    private int speeds = -1;
     private RelativeLayout rlBT;
     private RelativeLayout rlVideo;
     private RelativeLayout rlApp;
@@ -73,6 +84,10 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
     public static final int REQUEST_CAMERA_CODE = 1000;
     public LocationManagerTool mLocationManager;
     private RequestPermissionTool requestPermissionTool;
+    private long lastTime = 0;
+    private SettingsFunctionTool mSettingsUtils;
+    private CompositeDisposable compositeDisposable;
+    private SharedPreferencesTool mSharedPreferencesTool;
 
     @SuppressLint("InflateParams")
     @Override
@@ -90,9 +105,6 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         Log.d(TAG, "onCreate: ");
         this.mContext = this;
         myHandle = new MyHandle(this);
-        InterfaceCallBackManagement.getInstance().setOnLocationListener(this);
-        mStartActivityTool = new StartActivityTool();
-        mLocationManager = new LocationManagerTool();
         initView();
         initData();
     }
@@ -160,6 +172,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         super.onResume();
         hideOrShowNav(false);
     }
+
     private void hideOrShowNav(boolean isHide) {
         Intent intent = new Intent(Customer.ACTION_HIDE_NAVIGATION);
         intent.putExtra("KEY_HIDE", isHide);
@@ -175,13 +188,8 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         return super.onKeyDown(keyCode, event);
     }
 
-//    @Override
-//    public boolean onKeyUp(int keyCode, KeyEvent event) {
-//        return super.onKeyUp(keyCode, event);
-//    }
-
     private static class MyHandle extends Handler {
-        private LauncherHomeActivity mActivity;
+        private final LauncherHomeActivity mActivity;
 
         MyHandle(LauncherHomeActivity activity) {
             WeakReference<LauncherHomeActivity> reference =
@@ -192,20 +200,31 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 1) {
-                mActivity.updateGpsSpeed(String.valueOf(msg.arg1));
+            switch (msg.what) {
+                case 1:
+                    mActivity.updateGpsSpeed(String.valueOf(msg.arg1));
+                    break;
+                case 2:
+                    mActivity.startDVRService();
+                    break;
+                case 3:
+                    mActivity.mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
+                    mActivity.startUploadService();
+                    mActivity.checkPhoneNumber();
+                    mActivity.initMaxScreenTime();
+                    break;
+                case 4:
+                    mActivity.sendStateCode();
+                    break;
+                case 5:
+                    mActivity.mSettingsUtils.setDataEnabled(true);
+                    break;
+                case 6:
+                    mActivity.mStartActivityTool.startValidationTools();
+                    mActivity.checkDVR003File();
+                    break;
             }
-            if (msg.what == 2) {
-                mActivity.startDVRService();
-            }
-            if (msg.what == 3) {
-                mActivity.mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_DVR3_TW);
-                mActivity.startUploadService();
-                mActivity.checkPhoneNumber();
-            }
-            if (msg.what == 4) {
-                mActivity.sendStateCode();
-            }
+            removeMessages(msg.what);
         }
     }
 
@@ -262,6 +281,24 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         myHandle.sendMessage(message);
     }
 
+    @Override
+    public void changeAirMode() {
+        if (isRestartAirMode()) {
+            mSettingsUtils.setDataEnabled(false);
+            myHandle.sendEmptyMessageAtTime(5, 2000);
+        }
+    }
+
+    private boolean isRestartAirMode() {
+        long currentTime = SystemClock.uptimeMillis();
+        if ((currentTime - lastTime) >= 1800000) {
+            lastTime = currentTime;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void registerAppReceiver() {
 //        IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
 //        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
@@ -271,6 +308,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
 //        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 //        filter.addDataScheme("package");
         IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         filter.addAction(Customer.ACTION_TW_STATE);
         registerReceiver(mReceiver, filter);
     }
@@ -281,28 +319,36 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         registerReceiver(mReceiver, filter);
     }
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-        }
-    };
-
     @SuppressLint("NewApi")
     private void initData() {
         getWindow().getDecorView().post(() -> myHandle.post(() -> {
-//            LauncherApp.getInstance().initAppList();
+            InterfaceCallBackManagement.getInstance().setOnLocationListener(this);
+            mStartActivityTool = new StartActivityTool();
+            mSettingsUtils = new SettingsFunctionTool();
+            mLocationManager = new LocationManagerTool();
+            compositeDisposable = new CompositeDisposable();
+            mSharedPreferencesTool = new SharedPreferencesTool(this);
             mReceiver = new APPReceiver();
-//            mLocationManager.getLocation();
-//            checkPermission();
             requestPermissionTool = new RequestPermissionTool(mContext);
             requestPermissionTool.initPermission(permissions, this);
             registerAppReceiver();
             myHandle.sendEmptyMessageDelayed(2, 4000);
             myHandle.sendEmptyMessageDelayed(3, 10000);
             myHandle.sendEmptyMessageDelayed(4, 12000);
+            myHandle.sendEmptyMessageDelayed(6, 14000);
         }));
     }
+
+    private void initMaxScreenTime() {
+        if (mSharedPreferencesTool.isFirstStart()) {
+            mSettingsUtils.setScreenOffTimeOut(Integer.MAX_VALUE);
+            Settings.Global.putInt(getContentResolver(), SCREEN_TYPE, 0);
+            mSettingsUtils.setVolume(12, AudioManager.STREAM_MUSIC);
+            mSettingsUtils.setVolume(mSettingsUtils.getMaxValue(AudioManager.STREAM_SYSTEM),
+                    AudioManager.STREAM_SYSTEM);
+        }
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -406,6 +452,46 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
                 });
     }
 
+    private long startTime;
+
+    private void copyDVR003File(String copyPath, String targetPath) {
+        compositeDisposable.add(Observable.create(new ObservableOnSubscribe<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                startTime = SystemClock.uptimeMillis();
+                boolean is = FileOperationTool.copyAll(copyPath, targetPath);
+                emitter.onNext(true);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(bindUntilEvent(ActivityEvent.DESTROY))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) {
+                        int time = (int) ((SystemClock.uptimeMillis() - startTime) / 1000);
+                        Log.d(TAG, "copyDVR003File: " + aBoolean + " time " + time);
+                    }
+                }));
+    }
+
+    private void checkDVR003File() {
+        if (!Customer.IS_SUPPORT_COPY_FILE) {
+            return;
+        }
+        String storagePath = StoragePaTool.getStoragePath(false);
+        Log.d(TAG, "checkDVR003File: " + storagePath);
+        String path = storagePath + "/Download/here_offline_cache";
+        File file = new File(path);
+        if (!file.exists()) {
+            String targetPath = storagePath + "/Download/here_offline_cache";
+            String copyPath = "/system/etc/KD003_info/here_offline_cache";
+            Log.d(TAG, "checkDVR003File: copyPath " + copyPath + "\n targetPath " + targetPath);
+            copyDVR003File(copyPath, targetPath);
+        } else {
+            Log.d(TAG, "checkDVR003File: the file exists");
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -415,9 +501,9 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             myHandle.removeCallbacksAndMessages(null);
             myHandle = null;
         }
-        if (broadcastReceiver != null) {
-            unregisterReceiver(broadcastReceiver);
-            broadcastReceiver = null;
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+            compositeDisposable.clear();
         }
         if (mReceiver != null) {
             unregisterReceiver(mReceiver);
@@ -426,6 +512,13 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             mLocationManager.stopLocation();
             mLocationManager.stopGaoDeLocation();
         }
+    }
+
+    private void test() {
+        MediaPlayer player;
+        player = MediaPlayer.create(this, R.raw.smart_drive_detect);
+//            player.prepare();
+        player.start();
     }
 
 }
