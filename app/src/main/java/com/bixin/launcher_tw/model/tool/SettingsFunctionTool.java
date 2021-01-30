@@ -573,5 +573,10 @@ public class SettingsFunctionTool {
         return serial;
     }
 
+    private void goWifiSettings() {
+        Intent intent = new Intent();
+        intent.setAction("android.net.wifi.PICK_WIFI_NETWORK");
+        LauncherApp.getInstance().startActivity(intent);
+    }
 
 }

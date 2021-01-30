@@ -3,12 +3,15 @@ package com.bixin.launcher_tw.view.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -336,6 +339,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             myHandle.sendEmptyMessageDelayed(3, 10000);
             myHandle.sendEmptyMessageDelayed(4, 12000);
             myHandle.sendEmptyMessageDelayed(6, 14000);
+            setSelectedApnKey("23");
         }));
     }
 
@@ -515,10 +519,16 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
     }
 
     private void test() {
-        MediaPlayer player;
-        player = MediaPlayer.create(this, R.raw.smart_drive_detect);
-//            player.prepare();
-        player.start();
+//        MediaPlayer player;
+//        player = MediaPlayer.create(this, R.raw.smart_drive_detect);
+////            player.prepare();
+//        player.start();
     }
 
+    private void setSelectedApnKey(String key) {
+        ContentResolver resolver = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put("apn_id", key);
+        resolver.update(Uri.parse("content://telephony/carriers/preferapn/subId/1"), values, null, null);
+    }
 }
