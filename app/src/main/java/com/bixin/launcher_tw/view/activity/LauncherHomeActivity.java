@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.bean.Customer;
