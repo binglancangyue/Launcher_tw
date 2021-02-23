@@ -362,6 +362,13 @@ public class LauncherHomeActivity extends RxActivity implements View.OnClickList
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: ");
+        Settings.Global.putInt(mContext.getContentResolver(), Customer.CAMERA_NAV_COLOR, 0);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop: ");

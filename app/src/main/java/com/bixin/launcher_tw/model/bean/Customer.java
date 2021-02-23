@@ -30,4 +30,5 @@ public class Customer {
 
     public static final String ACTION_SHOW_SETTING_WINDOW = "com.android.systemui.show_setting_window";
 
+    public static final String CAMERA_NAV_COLOR = "camera_nav_color";
 }
