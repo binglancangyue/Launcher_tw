@@ -2,6 +2,7 @@ package com.bixin.launcher_tw.view.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -31,6 +32,7 @@ import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.listener.OnLocationListener;
 import com.bixin.launcher_tw.model.receiver.APPReceiver;
+import com.bixin.launcher_tw.model.tool.DialogTool;
 import com.bixin.launcher_tw.model.tool.FileOperationTool;
 import com.bixin.launcher_tw.model.tool.InterfaceCallBackManagement;
 import com.bixin.launcher_tw.model.tool.LocationManagerTool;
@@ -91,6 +93,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
     private SettingsFunctionTool mSettingsUtils;
     private CompositeDisposable compositeDisposable;
     private SharedPreferencesTool mSharedPreferencesTool;
+    private DialogTool mDialogTool;
 
     @SuppressLint("InflateParams")
     @Override
@@ -329,6 +332,7 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
             mStartActivityTool = new StartActivityTool();
             mSettingsUtils = new SettingsFunctionTool();
             mLocationManager = new LocationManagerTool();
+            mDialogTool = new DialogTool(this);
             compositeDisposable = new CompositeDisposable();
             mSharedPreferencesTool = new SharedPreferencesTool(this);
             mReceiver = new APPReceiver();
@@ -426,9 +430,14 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
     }
 
     private void showSettingWindow() {
-        Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
-        intent.putExtra("isLauncher", false);
-        sendBroadcast(intent);
+        int dvrState = Settings.Global.getInt(getContentResolver(), Customer.CAMERA_RECORD_STATUS, 0);
+        if (dvrState == 1) {
+            mDialogTool.showStopRecordDialog(mContext);
+        }else{
+            Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
+            intent.putExtra("isLauncher", false);
+            sendBroadcast(intent);
+        }
     }
 
     @Override
@@ -515,6 +524,9 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         if (mLocationManager != null) {
             mLocationManager.stopLocation();
             mLocationManager.stopGaoDeLocation();
+        }
+        if (mDialogTool != null) {
+            mDialogTool.dismissDialog();
         }
     }
 

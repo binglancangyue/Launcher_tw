@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +30,7 @@ public class DialogTool {
     private AlertDialog closeGPSDialog;
     private AlertDialog formatSDCardDialog;
     private AlertDialog close4GDialog;
+    private AlertDialog stopRecordDialog;
 
     public DialogTool(Context mContext) {
         this.mContext = mContext;
@@ -50,14 +52,14 @@ public class DialogTool {
                 public void onClick(View v) {
                     dismissCloseGPSDialog();
                     sendBroadcast("CLOSE_GPS", true);
-                    InterfaceCallBackManagement.getInstance().updateView(1,true);
+                    InterfaceCallBackManagement.getInstance().updateView(1, true);
                 }
             });
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismissCloseGPSDialog();
-                    InterfaceCallBackManagement.getInstance().updateView(1,false);
+                    InterfaceCallBackManagement.getInstance().updateView(1, false);
                 }
             });
             closeGPSDialog = builder.create();
@@ -122,19 +124,53 @@ public class DialogTool {
                 public void onClick(View v) {
                     dismissClose4GDialog();
 //                    sendBroadcast("CLOSE_4G", true);
-                    InterfaceCallBackManagement.getInstance().updateView(2,true);
+                    InterfaceCallBackManagement.getInstance().updateView(2, true);
                 }
             });
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismissClose4GDialog();
-                    InterfaceCallBackManagement.getInstance().updateView(2,false);
+                    InterfaceCallBackManagement.getInstance().updateView(2, false);
                 }
             });
             close4GDialog = builder.create();
         }
         showAlertDialog(close4GDialog);
+    }
+
+    public void showStopRecordDialog(Context context) {
+        if (stopRecordDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            View view = View.inflate(context, R.layout.dialog_layout, null);
+            builder.setView(view);
+            TextView title = view.findViewById(R.id.tv_dialog_title);
+            TextView message = view.findViewById(R.id.tv_dialog_message);
+            TextView negativeButton = view.findViewById(R.id.tv_dialog_cancel);
+            TextView positiveButton = view.findViewById(R.id.tv_dialog_ok);
+            title.setText(R.string.stop_record_title);
+            message.setText(R.string.stop_record_message);
+            negativeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissStopRecordDialog();
+                    sendBroadcast("CLOSE_GPS", true);
+                }
+            });
+            positiveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Settings.Global.getInt(mContext.getContentResolver(),
+                            Customer.CAMERA_RECORD_STATUS, 0);
+                    dismissStopRecordDialog();
+                    Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
+                    intent.putExtra("isLauncher", false);
+                    mContext.sendBroadcast(intent);
+                }
+            });
+            stopRecordDialog = builder.create();
+        }
+        showAlertDialog(stopRecordDialog);
     }
 
     private void showDialog(AlertDialog alertDialog) {
@@ -156,6 +192,12 @@ public class DialogTool {
         }
     }
 
+    public void dismissStopRecordDialog() {
+        if (stopRecordDialog != null) {
+            stopRecordDialog.dismiss();
+        }
+    }
+
     public void dismissClose4GDialog() {
         if (close4GDialog != null) {
             close4GDialog.dismiss();
@@ -172,9 +214,11 @@ public class DialogTool {
         dismissCloseGPSDialog();
         dismissFormatDialog();
         dismissClose4GDialog();
+        dismissStopRecordDialog();
         close4GDialog = null;
         closeGPSDialog = null;
         formatSDCardDialog = null;
+        stopRecordDialog = null;
     }
 
     /**

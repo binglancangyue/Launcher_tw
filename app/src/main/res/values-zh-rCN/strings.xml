@@ -58,4 +58,6 @@
     <string name="device_control">裝置操作</string>
     <string name="tv_other_settings">系統設定</string>
     <string name="no_sd_card">未檢測到SD卡</string>
+    <string name="stop_record_title">停止录像</string>
+    <string name="stop_record_message">錄影功能將停止，是否確定停止錄影?</string>
 </resources>

@@ -10,7 +10,9 @@ public interface OnLocationListener {
      * location gps message
      */
     void gpsSpeedChanged(int speed);
+
     void changeAirMode();
+
     interface OnUpdateViewListener {
         void updateView(int type, boolean isCheck);
     }
