@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/home_media_normal_3in" android:state_pressed="false" />
-    <item android:drawable="@drawable/home_media_press_3in" android:state_pressed="true" />
-    <item android:drawable="@drawable/home_media_normal_3in" />
+    <item android:drawable="@drawable/ic_kd002_ui_home_video_off" android:state_pressed="false" />
+    <item android:drawable="@drawable/ic_kd002_ui_home_video_on" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_kd002_ui_home_video_off" />
 </selector>

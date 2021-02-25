@@ -33,6 +33,7 @@ import com.bixin.launcher_tw.model.tool.SharePreferencesTool;
 import com.bixin.launcher_tw.model.tool.StartActivityTool;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.RxActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.ref.WeakReference;
 
@@ -48,7 +49,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date :2020.03.31 下午 06:19
  * @description: main Activity
  */
-public class LauncherHomeActivity extends RxActivity implements View.OnClickListener,
+public class LauncherHomeActivity extends RxAppCompatActivity implements View.OnClickListener,
         OnLocationListener {
     private Context mContext;
     private MyHandle myHandle;
