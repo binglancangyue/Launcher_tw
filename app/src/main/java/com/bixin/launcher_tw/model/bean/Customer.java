@@ -26,8 +26,10 @@ public class Customer {
     public static final String ACTION_SET_DVR_RECORD_TIME = "com.android.systemui.SET_DVR_RECORD_TIME";
     public static final String ACTION_TW_STATE = "com.transiot.kardidvr003.machineState";
     public final static String SP_NAME = "launcher_settings";
+    public final static int HANDLE_MESSAGE_CODE = 99;
+    public final static int HIDE_NAV_DELAY_MILLIS = 800;
 
-//    public static final String SYSTEM_UI_KEY="key_type";
+//    public static final String SYSTEM_UI_KEY = "key_type";
     public static final String ACTION_TXZ_CUSTOM_COMMAND = "com.bixin.txz.command";
 
     public static final boolean IS_DOUBLE_ROWS = false;
@@ -37,4 +39,5 @@ public class Customer {
     public static final String ACTION_SHOW_SETTING_WINDOW = "com.android.systemui.show_setting_window";
 
     public static final String CAMERA_RECORD_STATUS = "camera_record_status";
+    public static final String CAMERA_RECORD_STOP = "camera_record_stop";
 }

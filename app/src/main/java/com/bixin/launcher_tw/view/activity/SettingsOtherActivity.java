@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.tool.DialogTool;
 import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
 import com.bixin.launcher_tw.model.tool.StoragePaTool;
@@ -124,6 +125,7 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
             case R.id.tv_system_settings:
                 Intent intent = new Intent(Settings.ACTION_SETTINGS);
                 startActivity(intent);
+                hideOrShowNav(false);
                 break;
             case R.id.rb_recording_1:
                 clearRecordingTime();
@@ -165,8 +167,11 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
             super.dispatchMessage(msg);
             if (msg.what == 1) {
                 mActivity.updateSenSorState();
-                removeMessages(msg.what);
             }
+            if (msg.what == Customer.HANDLE_MESSAGE_CODE) {
+                mActivity.hideOrShowNav(true);
+            }
+            removeMessages(msg.what);
         }
     }
 
@@ -183,6 +188,7 @@ public class SettingsOtherActivity extends BaseAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        myHandle.sendEmptyMessageDelayed(Customer.HANDLE_MESSAGE_CODE, Customer.HIDE_NAV_DELAY_MILLIS);
         Log.d(TAG, "onResume: ");
     }
 

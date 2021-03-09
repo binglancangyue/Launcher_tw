@@ -139,9 +139,9 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
                 if (Customer.IS_DOUBLE_ROWS) {
                     mStartActivityTool.openAPUI();
                 } else if (Customer.IS_KD003) {
-//                    showSettingWindow();
-                    Intent intent = new Intent(this, LauncherSettingsActivity.class);
-                    startActivity(intent);
+                    showSettingWindow();
+//                    Intent intent = new Intent(this, LauncherSettingsActivity.class);
+//                    startActivity(intent);
                 } else {
                     mStartActivityTool.launchAppByPackageName(Customer.PACKAGE_NAME_ViDEO_PLAY_BACK);
                 }
@@ -433,10 +433,12 @@ public class LauncherHomeActivity extends RxAppCompatActivity implements View.On
         int dvrState = Settings.Global.getInt(getContentResolver(), Customer.CAMERA_RECORD_STATUS, 0);
         if (dvrState == 1) {
             mDialogTool.showStopRecordDialog(mContext);
-        }else{
-            Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
-            intent.putExtra("isLauncher", false);
-            sendBroadcast(intent);
+        } else {
+            Intent intent = new Intent(this, LauncherSettingsActivity.class);
+            startActivity(intent);
+//            Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
+//            intent.putExtra("isLauncher", false);
+//            sendBroadcast(intent);
         }
     }
 

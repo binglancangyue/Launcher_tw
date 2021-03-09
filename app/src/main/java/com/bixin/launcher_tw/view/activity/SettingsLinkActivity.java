@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.listener.OnLocationListener;
 import com.bixin.launcher_tw.model.tool.DialogTool;
 import com.bixin.launcher_tw.model.tool.InterfaceCallBackManagement;
@@ -200,6 +201,9 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
             if (msg.what == 2) {
                 mActivity.updateGPSState();
             }
+            if (msg.what == Customer.HANDLE_MESSAGE_CODE) {
+                mActivity.hideOrShowNav(true);
+            }
             removeMessages(msg.what);
         }
     }
@@ -223,6 +227,13 @@ public class SettingsLinkActivity extends BaseAppCompatActivity implements OnLoc
             tvGPSState.setText(R.string.state_off);
             tvGPSState.setTextColor(Color.WHITE);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        myHandle.sendEmptyMessageDelayed(Customer.HANDLE_MESSAGE_CODE, Customer.HIDE_NAV_DELAY_MILLIS);
     }
 
     @Override

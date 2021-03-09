@@ -2,6 +2,8 @@ package com.bixin.launcher_tw.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,6 +15,8 @@ import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.tool.StartActivityTool;
 
+import java.lang.ref.WeakReference;
+
 public class LauncherSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = LauncherSettingsActivity.class.getName();
     private LinearLayout llOther;
@@ -20,6 +24,7 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
     private LinearLayout llLink;
     private LinearLayout llScreen;
     private StartActivityTool startActivityTool;
+    private MyHandle myHandle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
 
     private void init() {
         startActivityTool = new StartActivityTool();
+        myHandle = new MyHandle(this);
     }
 
     private void initView() {
@@ -42,7 +48,6 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
         llADAS.setOnClickListener(this);
         llLink.setOnClickListener(this);
         llScreen.setOnClickListener(this);
-
     }
 
     @Override
@@ -78,11 +83,31 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
         sendBroadcast(intent);
     }
 
+    private static class MyHandle extends Handler {
+        private LauncherSettingsActivity mActivity;
+
+        MyHandle(LauncherSettingsActivity activity) {
+            WeakReference<LauncherSettingsActivity> reference =
+                    new WeakReference<>(activity);
+            this.mActivity = reference.get();
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == Customer.HANDLE_MESSAGE_CODE) {
+                mActivity.hideOrShowNav(true);
+            }
+            removeMessages(msg.what);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
         hideOrShowNav(true);
+        myHandle.sendEmptyMessageDelayed(Customer.HANDLE_MESSAGE_CODE, Customer.HIDE_NAV_DELAY_MILLIS);
     }
 
     @Override
@@ -96,6 +121,9 @@ public class LauncherSettingsActivity extends AppCompatActivity implements View.
         super.onDestroy();
         hideOrShowNav(false);
         startActivityTool = null;
+        if (myHandle != null) {
+            myHandle.removeCallbacksAndMessages(null);
+        }
         Log.d(TAG, "onStop: ");
     }
 

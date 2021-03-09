@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bixin.launcher_tw.R;
+import com.bixin.launcher_tw.model.bean.Customer;
 import com.bixin.launcher_tw.model.tool.SettingsFunctionTool;
 import com.bixin.launcher_tw.model.tool.SharedPreferencesTool;
 import com.bixin.launcher_tw.view.base.BaseAppCompatActivity;
@@ -308,7 +309,17 @@ public class SettingsScreenActivity extends BaseAppCompatActivity implements See
             if (msg.what == 0) {
                 mActivity.rbtTimeEnable(true);
             }
+            if (msg.what == Customer.HANDLE_MESSAGE_CODE) {
+                mActivity.hideOrShowNav(true);
+            }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        myHandle.sendEmptyMessageDelayed(Customer.HANDLE_MESSAGE_CODE, Customer.HIDE_NAV_DELAY_MILLIS);
     }
 
     @Override

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bixin.launcher_tw.R;
 import com.bixin.launcher_tw.model.bean.Customer;
+import com.bixin.launcher_tw.view.activity.LauncherSettingsActivity;
 
 import java.lang.reflect.Field;
 
@@ -154,18 +155,22 @@ public class DialogTool {
                 @Override
                 public void onClick(View v) {
                     dismissStopRecordDialog();
-                    sendBroadcast("CLOSE_GPS", true);
+//                    sendBroadcast("CLOSE_GPS", true);
                 }
             });
             positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Settings.Global.getInt(mContext.getContentResolver(),
-                            Customer.CAMERA_RECORD_STATUS, 0);
+                    Settings.Global.putInt(mContext.getContentResolver(),
+                            Customer.CAMERA_RECORD_STOP, 0);
+                    Settings.Global.putInt(mContext.getContentResolver(),
+                            Customer.CAMERA_RECORD_STOP, 1);
                     dismissStopRecordDialog();
-                    Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
-                    intent.putExtra("isLauncher", false);
-                    mContext.sendBroadcast(intent);
+//                    Intent intent = new Intent(Customer.ACTION_SHOW_SETTING_WINDOW);
+//                    intent.putExtra("isLauncher", false);
+//                    mContext.sendBroadcast(intent);
+                    Intent intent = new Intent(mContext, LauncherSettingsActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
             stopRecordDialog = builder.create();
