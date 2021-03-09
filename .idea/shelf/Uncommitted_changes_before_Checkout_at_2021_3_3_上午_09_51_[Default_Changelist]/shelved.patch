@@ -1,0 +1,40 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\n\r\nandroid {\r\n    compileSdkVersion 28\r\n    buildToolsVersion '30.0.2'\r\n\r\n    defaultConfig {\r\n        applicationId \"com.bixin.launcher_tw\"\r\n        minSdkVersion 23\r\n        //noinspection OldTargetApi\r\n        targetSdkVersion 27\r\n        versionCode 2\r\n        versionName '1.0.210225.1'\r\n        vectorDrawables.useSupportLibrary = true\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            // 开启混淆\r\n            minifyEnabled false\r\n            // Zipalign压缩优化\r\n            zipAlignEnabled true\r\n            // 移除无用的资源文件\r\n            shrinkResources false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = 1.8\r\n        targetCompatibility = 1.8\r\n    }\r\n    ndkVersion '21.3.6528147'\r\n\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'\r\n    implementation 'androidx.recyclerview:recyclerview:1.1.0'\r\n    implementation 'com.amap.api:location:5.1.0'\r\n    implementation 'io.reactivex.rxjava2:rxjava:2.2.4'\r\n    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'\r\n    implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.2'\r\n    implementation 'com.trello.rxlifecycle2:rxlifecycle-navi:2.2.2'\r\n//    implementation 'com.alibaba:fastjson:1.2.62'\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision d45a8f1fbb6a2dc1f179fb97ff56397fea2f52bd)
++++ app/build.gradle	(date 1614655912878)
+@@ -9,8 +9,8 @@
+         minSdkVersion 23
+         //noinspection OldTargetApi
+         targetSdkVersion 27
+-        versionCode 2
+-        versionName '1.0.210225.1'
++        versionCode 1
++        versionName '1.0.210302.1'
+         vectorDrawables.useSupportLibrary = true
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+     }
+Index: app/release/output-metadata.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\r\n  \"version\": 2,\r\n  \"artifactType\": {\r\n    \"type\": \"APK\",\r\n    \"kind\": \"Directory\"\r\n  },\r\n  \"applicationId\": \"com.bixin.launcher_tw\",\r\n  \"variantName\": \"processReleaseResources\",\r\n  \"elements\": [\r\n    {\r\n      \"type\": \"SINGLE\",\r\n      \"filters\": [],\r\n      \"versionCode\": 2,\r\n      \"versionName\": \"1.0.210225.1\",\r\n      \"outputFile\": \"app-release.apk\"\r\n    }\r\n  ]\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/release/output-metadata.json	(revision d45a8f1fbb6a2dc1f179fb97ff56397fea2f52bd)
++++ app/release/output-metadata.json	(date 1614656032804)
+@@ -10,8 +10,8 @@
+     {
+       "type": "SINGLE",
+       "filters": [],
+-      "versionCode": 2,
+-      "versionName": "1.0.210225.1",
++      "versionCode": 1,
++      "versionName": "1.0.210302.1",
+       "outputFile": "app-release.apk"
+     }
+   ]
